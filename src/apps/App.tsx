@@ -1,14 +1,8 @@
-import '@apps/styles/styles.css'
-import { cn } from '@shared/utils'
+import '@apps/styles/styles.css';
+import AppRouteProvider from '@apps/providers/AppRouteProvider.tsx';
 
 function App() {
-  const exampleClass = 'bg-red-500'
-  return (
-    <div className={cn('flex flex-col', exampleClass)}>
-      <h2>initial</h2>
-      <p>Example of using the cn utility function to merge class names.</p>
-    </div>
-  )
+  return <AppRouteProvider />;
 }
 
-export default App
+export default App;
