@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
-import { DropdownMenu } from '@/components/DropdownMenu';
-import { Modal } from '@/components/Modal';
-import { Toast } from '@/components/Toast';
+import { DropdownMenu } from '@/components/common/DropdownMenu';
+import { Modal } from '@/components/common/Modal';
+import { Toast } from '@/components/common/Toast';
 
 export function PlaygroundPage() {
   const [isDescriptionModalOpen, setIsDescriptionModalOpen] = useState(false);
