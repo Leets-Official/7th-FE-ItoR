@@ -1,0 +1,46 @@
+.button-test-page {
+  min-height: 100vh;
+  padding: 32px 20px;
+  background: #f4f8fb;
+  color: #111827;
+}
+
+.button-test-page__content {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.button-test-page__title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.button-test-page__description {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.button-test-page__group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.button-test-page__subtitle {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.button-test-page__preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}

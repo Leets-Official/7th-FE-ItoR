@@ -1,0 +1,79 @@
+.start-git-log-button {
+  display: inline-flex;
+  height: 40px;
+  padding: 8px 12px;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  border-radius: 25px;
+  border: 1px solid transparent;
+  background: var(--white, #fff);
+  color: var(--gray-7, #111112);
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 160%;
+  letter-spacing: -0.07px;
+  cursor: pointer;
+}
+
+.start-git-log-button:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+
+.start-git-log-button--point {
+  border-color: var(--point, #00a1ff);
+  color: var(--point, #00a1ff);
+}
+
+.start-git-log-button--gray-outline {
+  border-color: var(--gray-56, #909090);
+  background: var(--white, #fff);
+  color: var(--gray-56, #909090);
+}
+
+.start-git-log-button--gray-plain {
+  border-color: transparent;
+  background: var(--white, #fff);
+  color: var(--gray-56, #909090);
+  height: auto;
+  align-items: flex-start;
+}
+
+.start-git-log-button--active {
+  border-color: transparent;
+  background: var(--gray-7, #111112);
+  color: var(--white, #fff);
+}
+
+.start-git-log-button--gray-filled-outline {
+  border-color: var(--gray-56, #909090);
+  background: var(--gray90, #e6e6e6);
+  color: var(--gray-56, #909090);
+}
+
+.start-git-log-button--gray-filled {
+  border-color: transparent;
+  background: var(--gray90, #e6e6e6);
+  color: var(--gray-56, #909090);
+  height: auto;
+  align-items: flex-start;
+}
+
+.start-git-log-button__icon-wrapper {
+  display: flex;
+  width: 24px;
+  height: 24px;
+  justify-content: center;
+  align-items: center;
+  aspect-ratio: 1 / 1;
+}
+
+.start-git-log-button__icon {
+  display: block;
+  width: 24px;
+  height: 24px;
+  aspect-ratio: 1 / 1;
+}
