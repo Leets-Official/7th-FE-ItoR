@@ -18,7 +18,7 @@ export function Toast({
       {...props}
     >
       <span className={toastBaseStyle.icon}>
-        <variantStyle.Icon aria-hidden="true" className="h-6 w-6" />
+        <variantStyle.Icon aria-hidden="true" className="block h-full w-full" />
       </span>
       <span className={toastBaseStyle.text}>
         {message}

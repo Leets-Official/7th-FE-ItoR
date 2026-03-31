@@ -1,14 +1,14 @@
-import { DoneIcon, ErrorIcon } from '@/assets/icons';
+import { DoneIcon, ErrorOutlineIcon } from '@/assets/icons';
 
 export const toastBaseStyle = {
-  root: 'inline-flex h-10 items-center gap-1 rounded-[25px] border bg-white/90 px-3 py-2 shadow-sm',
+  root: 'inline-flex h-10 w-fit self-start items-center gap-1 rounded-[25px] border bg-white px-3',
   icon: 'flex h-6 w-6 shrink-0 items-center justify-center',
-  text: 'flex h-[22px] items-center whitespace-nowrap text-sm font-regular leading-none tracking-[-0.07px]',
+  text: 'block h-[22px] whitespace-nowrap text-sm font-regular leading-[22px] tracking-[-0.07px]',
 };
 
 export const toastVariantStyle = {
   error: {
-    Icon: ErrorIcon,
+    Icon: ErrorOutlineIcon,
     color: 'text-warning border-warning',
     role: 'alert' as const,
   },
