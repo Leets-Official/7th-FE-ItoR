@@ -1,7 +1,14 @@
 import clsx from 'clsx';
+import type { HTMLAttributes } from 'react';
 
-import type { ToastProps } from './types';
 import { toastBaseStyle, toastVariantStyle } from './variants';
+
+export type ToastVariant = 'error' | 'success';
+
+export interface ToastProps extends HTMLAttributes<HTMLDivElement> {
+  message: string;
+  variant: ToastVariant;
+}
 
 export function Toast({
   className,
