@@ -2,6 +2,17 @@ import { CompactLabelButton } from '@/components/button/CompactLabelButton'
 import { StartGitLogButton } from '@/components/button/StartGitLogButton'
 import './ButtonTestPage.css'
 
+const START_BUTTON_VARIANTS = [
+  'point',
+  'grayOutline',
+  'grayPlain',
+  'active',
+  'grayFilledOutline',
+  'grayFilled',
+] as const
+
+const COMPACT_BUTTON_VARIANTS = ['plain', 'gray90'] as const
+
 export default function ButtonTestPage() {
   return (
     <section className="button-test-page">
@@ -13,19 +24,17 @@ export default function ButtonTestPage() {
         <div className="button-test-page__group">
           <h2 className="button-test-page__subtitle">Start Git Log Button</h2>
           <div className="button-test-page__preview" aria-label="버튼 컴포넌트 테스트 영역">
-            <StartGitLogButton variant="point" />
-            <StartGitLogButton variant="grayOutline" />
-            <StartGitLogButton variant="grayPlain" />
-            <StartGitLogButton variant="active" />
-            <StartGitLogButton variant="grayFilledOutline" />
-            <StartGitLogButton variant="grayFilled" />
+            {START_BUTTON_VARIANTS.map((variant) => (
+              <StartGitLogButton key={variant} variant={variant} />
+            ))}
           </div>
         </div>
         <div className="button-test-page__group">
           <h2 className="button-test-page__subtitle">Compact Label Button</h2>
           <div className="button-test-page__preview" aria-label="컴팩트 버튼 테스트 영역">
-            <CompactLabelButton />
-            <CompactLabelButton variant="gray90" />
+            {COMPACT_BUTTON_VARIANTS.map((variant) => (
+              <CompactLabelButton key={variant} variant={variant} />
+            ))}
           </div>
         </div>
       </div>
