@@ -1,6 +1,7 @@
 import { MiniButton } from '@/components/button/CompactLabelButton'
 import { MainButton } from '@/components/button/StartGitLogButton'
 import { DeleteModal } from '@/components/modal/DeleteConfirmModal'
+import { Toast } from '@/components/toast/Toast'
 import './ButtonTestPage.css'
 
 const START_BUTTON_VARIANTS = [
@@ -43,6 +44,13 @@ export default function ButtonTestPage() {
           <div className="button-test-page__modal-preview" aria-label="삭제 확인 모달 테스트 영역">
             <DeleteModal />
             <DeleteModal variant="titleOnly" />
+          </div>
+        </div>
+        <div className="button-test-page__group">
+          <h2 className="button-test-page__subtitle">Toast</h2>
+          <div className="button-test-page__preview" aria-label="토스트 컴포넌트 테스트 영역">
+            <Toast variant="error" />
+            <Toast variant="success" />
           </div>
         </div>
       </div>
