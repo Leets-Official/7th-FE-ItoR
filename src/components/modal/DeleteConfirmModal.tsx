@@ -1,10 +1,9 @@
 import { useId } from 'react'
 import { cn } from '@/utils/cn'
-import './DeleteConfirmModal.css'
 
-type DeleteModalVariant = 'withDescription' | 'titleOnly'
+type ModalVariant = 'withDescription' | 'titleOnly'
 
-type DeleteModalProps = {
+type ModalProps = {
   cancelText?: string
   className?: string
   deleteText?: string
@@ -12,10 +11,10 @@ type DeleteModalProps = {
   onCancel?: () => void
   onDelete?: () => void
   title?: string
-  variant?: DeleteModalVariant
+  variant?: ModalVariant
 }
 
-export function DeleteModal({
+export function Modal({
   cancelText = '취소',
   className,
   deleteText = '삭제하기',
@@ -24,7 +23,7 @@ export function DeleteModal({
   onDelete,
   title = 'Title line one\nTitle line two',
   variant = 'withDescription',
-}: DeleteModalProps) {
+}: ModalProps) {
   const dialogId = useId()
   const descriptionId = `${dialogId}-description`
   const titleId = `${dialogId}-title`
@@ -36,29 +35,38 @@ export function DeleteModal({
       aria-modal="true"
       aria-labelledby={titleId}
       aria-describedby={showDescription ? descriptionId : undefined}
-      className={cn('delete-confirm-modal', className)}
+      className={cn(
+        'flex w-[326px] flex-col items-start gap-6 rounded-[4px] bg-white px-4 pb-4 pt-6 shadow-[0_2px_8px_0_rgba(0,0,0,0.10)]',
+        className,
+      )}
     >
-      <div className="delete-confirm-modal__content">
-        <p id={titleId} className="delete-confirm-modal__title">
+      <div className="flex w-full self-stretch flex-col items-start gap-2 rounded-xl px-1">
+        <p
+          id={titleId}
+          className="m-0 whitespace-pre-line text-[14px] font-normal leading-[160%] tracking-[-0.07px] text-black [font-family:'Noto_Sans_KR',sans-serif]"
+        >
           {title}
         </p>
         {showDescription ? (
-          <p id={descriptionId} className="delete-confirm-modal__description">
+          <p
+            id={descriptionId}
+            className="m-0 whitespace-pre-line text-[14px] font-normal leading-[160%] tracking-[-0.07px] text-[#909090] [font-family:'Noto_Sans_KR',sans-serif]"
+          >
             {description}
           </p>
         ) : null}
       </div>
-      <div className="delete-confirm-modal__actions">
+      <div className="flex w-full gap-2">
         <button
           type="button"
-          className="delete-confirm-modal__button delete-confirm-modal__button--cancel"
+          className="flex flex-[1_0_0] cursor-pointer items-center justify-center gap-2 rounded-[2px] border border-[#F5F5F5] bg-white px-3 py-2 text-[14px] font-normal leading-[160%] tracking-[-0.07px] text-black [font-family:'Noto_Sans_KR',sans-serif] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2563EB]"
           onClick={onCancel}
         >
           {cancelText}
         </button>
         <button
           type="button"
-          className="delete-confirm-modal__button delete-confirm-modal__button--delete"
+          className="flex flex-[1_0_0] cursor-pointer items-center justify-center gap-2 rounded-[2px] border-0 bg-[#FF3F3F] px-3 py-2 text-[14px] font-normal leading-[160%] tracking-[-0.07px] text-white [font-family:'Noto_Sans_KR',sans-serif] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2563EB]"
           onClick={onDelete}
         >
           {deleteText}

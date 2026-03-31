@@ -1,6 +1,6 @@
 import { MiniButton } from '@/components/button/CompactLabelButton'
-import { MainButton } from '@/components/button/StartGitLogButton'
-import { DeleteModal } from '@/components/modal/DeleteConfirmModal'
+import { Button } from '@/components/button/StartGitLogButton'
+import { Modal } from '@/components/modal/DeleteConfirmModal'
 import { Toast } from '@/components/toast/Toast'
 import './ButtonTestPage.css'
 
@@ -24,10 +24,10 @@ export default function ButtonTestPage() {
           Figma 스펙 기준 버튼 variant 미리보기입니다.
         </p>
         <div className="button-test-page__group">
-          <h2 className="button-test-page__subtitle">Main Button</h2>
+          <h2 className="button-test-page__subtitle">Button</h2>
           <div className="button-test-page__preview" aria-label="버튼 컴포넌트 테스트 영역">
             {START_BUTTON_VARIANTS.map((variant) => (
-              <MainButton key={variant} variant={variant} />
+              <Button key={variant} variant={variant} />
             ))}
           </div>
         </div>
@@ -40,10 +40,10 @@ export default function ButtonTestPage() {
           </div>
         </div>
         <div className="button-test-page__group">
-          <h2 className="button-test-page__subtitle">Delete Modal</h2>
+          <h2 className="button-test-page__subtitle">Modal</h2>
           <div className="button-test-page__modal-preview" aria-label="삭제 확인 모달 테스트 영역">
-            <DeleteModal />
-            <DeleteModal variant="titleOnly" />
+            <Modal />
+            <Modal variant="titleOnly" />
           </div>
         </div>
         <div className="button-test-page__group">
