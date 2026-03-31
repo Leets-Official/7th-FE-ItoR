@@ -1,18 +1,5 @@
 import { Toast } from '@/components/Toast';
 
-const toastExamples = [
-  {
-    id: 'error',
-    variant: 'error' as const,
-    message: '내용을 입력해주세요',
-  },
-  {
-    id: 'success',
-    variant: 'success' as const,
-    message: '저장되었습니다!',
-  },
-];
-
 export function PlaygroundPage() {
   return (
     <main className="min-h-screen bg-gray-96 px-6 py-16">
@@ -20,11 +7,8 @@ export function PlaygroundPage() {
         <h1 className="text-2xl font-bold text-character-title">Toast</h1>
 
         <section className="flex flex-col gap-4 rounded-3xl border border-dashed border-gray-78 bg-gray-96/60 p-8">
-          {toastExamples.map((example) => (
-            <div key={example.id} className="flex items-center">
-              <Toast message={example.message} variant={example.variant} />
-            </div>
-          ))}
+          <Toast message="내용을 입력해주세요" variant="error" />
+          <Toast message="저장되었습니다!" variant="success" />
         </section>
       </div>
     </main>
