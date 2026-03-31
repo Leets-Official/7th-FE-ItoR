@@ -1,3 +1,4 @@
+import { CompactLabelButton } from '@/components/button/CompactLabelButton'
 import { StartGitLogButton } from '@/components/button/StartGitLogButton'
 import './ButtonTestPage.css'
 
@@ -18,6 +19,13 @@ export default function ButtonTestPage() {
             <StartGitLogButton variant="active" />
             <StartGitLogButton variant="grayFilledOutline" />
             <StartGitLogButton variant="grayFilled" />
+          </div>
+        </div>
+        <div className="button-test-page__group">
+          <h2 className="button-test-page__subtitle">Compact Label Button</h2>
+          <div className="button-test-page__preview" aria-label="컴팩트 버튼 테스트 영역">
+            <CompactLabelButton />
+            <CompactLabelButton variant="gray90" />
           </div>
         </div>
       </div>

@@ -1,0 +1,35 @@
+.compact-label-button {
+  display: inline-flex;
+  padding: 2px 8px 4px;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  border: 0;
+  background: transparent;
+  color: var(--gray-56, #909090);
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 160%;
+  cursor: pointer;
+}
+
+.compact-label-button:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+
+.compact-label-button--gray90 {
+  background: var(--gray90, #e6e6e6);
+}
+
+.compact-label-button__icon {
+  display: flex;
+  width: 14px;
+  height: 14px;
+  justify-content: center;
+  align-items: center;
+  aspect-ratio: 1 / 1;
+  flex-shrink: 0;
+}
