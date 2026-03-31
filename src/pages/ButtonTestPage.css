@@ -44,3 +44,9 @@
   flex-wrap: wrap;
   gap: 12px;
 }
+
+.button-test-page__modal-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}

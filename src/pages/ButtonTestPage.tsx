@@ -1,5 +1,6 @@
 import { CompactLabelButton } from '@/components/button/CompactLabelButton'
 import { StartGitLogButton } from '@/components/button/StartGitLogButton'
+import { DeleteModal } from '@/components/modal/DeleteConfirmModal'
 import './ButtonTestPage.css'
 
 const START_BUTTON_VARIANTS = [
@@ -35,6 +36,13 @@ export default function ButtonTestPage() {
             {COMPACT_BUTTON_VARIANTS.map((variant) => (
               <CompactLabelButton key={variant} variant={variant} />
             ))}
+          </div>
+        </div>
+        <div className="button-test-page__group">
+          <h2 className="button-test-page__subtitle">Delete Modal</h2>
+          <div className="button-test-page__modal-preview" aria-label="삭제 확인 모달 테스트 영역">
+            <DeleteModal />
+            <DeleteModal variant="titleOnly" />
           </div>
         </div>
       </div>
