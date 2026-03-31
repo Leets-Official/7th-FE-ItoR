@@ -9,19 +9,19 @@ const COMPACT_LABEL_BUTTON_VARIANTS = {
   gray90: 'compact-label-button--gray90',
 } as const
 
-export type CompactLabelButtonVariant = keyof typeof COMPACT_LABEL_BUTTON_VARIANTS
+export type MiniButtonVariant = keyof typeof COMPACT_LABEL_BUTTON_VARIANTS
 
-type CompactLabelButtonProps = ButtonCommonProps & {
-  variant?: CompactLabelButtonVariant
+type MiniButtonProps = ButtonCommonProps & {
+  variant?: MiniButtonVariant
 }
 
-export function CompactLabelButton({
+export function MiniButton({
   ariaLabel,
   className,
   label = '깃로그 시작하기',
   onClick,
   variant = 'plain',
-}: CompactLabelButtonProps) {
+}: MiniButtonProps) {
   return (
     <BaseLabelButton
       ariaLabel={ariaLabel}

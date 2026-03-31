@@ -13,19 +13,19 @@ const BUTTON_VARIANTS = {
   grayFilled: 'start-git-log-button--gray-filled',
 } as const
 
-export type StartGitLogButtonVariant = keyof typeof BUTTON_VARIANTS
+export type MainButtonVariant = keyof typeof BUTTON_VARIANTS
 
-type StartGitLogButtonProps = ButtonCommonProps & {
-  variant?: StartGitLogButtonVariant
+type MainButtonProps = ButtonCommonProps & {
+  variant?: MainButtonVariant
 }
 
-export function StartGitLogButton({
+export function MainButton({
   ariaLabel,
   className,
   label = '깃로그 시작하기',
   onClick,
   variant = 'point',
-}: StartGitLogButtonProps) {
+}: MainButtonProps) {
   return (
     <BaseLabelButton
       ariaLabel={ariaLabel}
