@@ -36,21 +36,21 @@ export function Modal({
       aria-labelledby={titleId}
       aria-describedby={showDescription ? descriptionId : undefined}
       className={cn(
-        'flex w-[326px] flex-col items-start gap-6 rounded-[4px] bg-white px-4 pb-4 pt-6 shadow-[0_2px_8px_0_rgba(0,0,0,0.10)]',
+        'flex w-[326px] flex-col items-start gap-6 rounded-[4px] bg-[var(--color-white)] px-4 pb-4 pt-6 shadow-[0_2px_8px_0_rgba(0,0,0,0.10)]',
         className,
       )}
     >
       <div className="flex w-full self-stretch flex-col items-start gap-2 rounded-xl px-1">
         <p
           id={titleId}
-          className="m-0 whitespace-pre-line text-[14px] font-normal leading-[160%] tracking-[-0.07px] text-black [font-family:'Noto_Sans_KR',sans-serif]"
+          className="m-0 whitespace-pre-line text-[14px] font-normal leading-[160%] tracking-[-0.07px] text-[var(--color-black)]"
         >
           {title}
         </p>
         {showDescription ? (
           <p
             id={descriptionId}
-            className="m-0 whitespace-pre-line text-[14px] font-normal leading-[160%] tracking-[-0.07px] text-[#909090] [font-family:'Noto_Sans_KR',sans-serif]"
+            className="m-0 whitespace-pre-line text-[14px] font-normal leading-[160%] tracking-[-0.07px] text-[var(--color-gray-56)]"
           >
             {description}
           </p>
@@ -59,14 +59,14 @@ export function Modal({
       <div className="flex w-full gap-2">
         <button
           type="button"
-          className="flex flex-[1_0_0] cursor-pointer items-center justify-center gap-2 rounded-[2px] border border-[#F5F5F5] bg-white px-3 py-2 text-[14px] font-normal leading-[160%] tracking-[-0.07px] text-black [font-family:'Noto_Sans_KR',sans-serif] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2563EB]"
+          className="flex flex-[1_0_0] cursor-pointer items-center justify-center gap-2 rounded-[2px] border border-[var(--color-gray-96)] bg-[var(--color-white)] px-3 py-2 text-[14px] font-normal leading-[160%] tracking-[-0.07px] text-[var(--color-black)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]"
           onClick={onCancel}
         >
           {cancelText}
         </button>
         <button
           type="button"
-          className="flex flex-[1_0_0] cursor-pointer items-center justify-center gap-2 rounded-[2px] border-0 bg-[#FF3F3F] px-3 py-2 text-[14px] font-normal leading-[160%] tracking-[-0.07px] text-white [font-family:'Noto_Sans_KR',sans-serif] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2563EB]"
+          className="flex flex-[1_0_0] cursor-pointer items-center justify-center gap-2 rounded-[2px] border-0 bg-[var(--color-negative)] px-3 py-2 text-[14px] font-normal leading-[160%] tracking-[-0.07px] text-[var(--color-white)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]"
           onClick={onDelete}
         >
           {deleteText}

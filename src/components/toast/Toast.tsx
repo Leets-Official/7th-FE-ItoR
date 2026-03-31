@@ -30,14 +30,16 @@ function DoneIcon() {
 export function Toast({ className, message, variant = 'error' }: ToastProps) {
   const isError = variant === 'error'
   const resolvedMessage = message ?? (isError ? '내용을 입력해주세요' : '저장되었습니다!')
-  const variantClass = isError ? 'border-[#FF3F3F] text-[#FF3F3F]' : 'border-[#15DC5E] text-[#15DC5E]'
+  const variantClass = isError
+    ? 'border-[var(--color-negative)] text-[var(--color-negative)]'
+    : 'border-[var(--color-positive)] text-[var(--color-positive)]'
 
   return (
     <div
       role={isError ? 'alert' : 'status'}
       aria-live={isError ? 'assertive' : 'polite'}
       className={cn(
-        "inline-flex h-10 items-center justify-center gap-1 rounded-[25px] border bg-white/90 px-3 py-2 text-[14px] font-normal leading-[160%] tracking-[-0.07px] backdrop-blur-[2px] [font-family:'Noto_Sans_KR',sans-serif]",
+        'inline-flex h-10 items-center justify-center gap-1 rounded-[25px] border bg-white/90 px-3 py-2 text-[14px] font-normal leading-[160%] tracking-[-0.07px] backdrop-blur-[2px]',
         variantClass,
         className,
       )}

@@ -4,12 +4,12 @@ import type { ButtonCommonProps } from '@/components/button/types'
 import { cn } from '@/utils/cn'
 
 const BUTTON_VARIANTS = {
-  point: 'border-[#00A1FF] text-[#00A1FF]',
-  grayOutline: 'border-[#909090] bg-white text-[#909090]',
-  grayPlain: 'h-auto items-start border-transparent bg-white text-[#909090]',
-  active: 'border-transparent bg-[#111112] text-white',
-  grayFilledOutline: 'border-[#909090] bg-[#E6E6E6] text-[#909090]',
-  grayFilled: 'h-auto items-start border-transparent bg-[#E6E6E6] text-[#909090]',
+  point: 'border-[var(--color-point)] text-[var(--color-point)]',
+  grayOutline: 'border-[var(--color-gray-56)] bg-[var(--color-white)] text-[var(--color-gray-56)]',
+  grayPlain: 'h-auto items-start border-transparent bg-[var(--color-white)] text-[var(--color-gray-56)]',
+  active: 'border-transparent bg-[var(--color-gray-7)] text-[var(--color-white)]',
+  grayFilledOutline: 'border-[var(--color-gray-56)] bg-[var(--color-gray-90)] text-[var(--color-gray-56)]',
+  grayFilled: 'h-auto items-start border-transparent bg-[var(--color-gray-90)] text-[var(--color-gray-56)]',
 } as const
 
 export type ButtonVariant = keyof typeof BUTTON_VARIANTS
@@ -26,7 +26,7 @@ export function Button({
   variant = 'point',
 }: ButtonProps) {
   const baseClassName =
-    "inline-flex h-10 cursor-pointer items-center justify-center gap-1 rounded-[25px] border border-transparent bg-white px-3 py-2 text-[14px] font-normal leading-[160%] tracking-[-0.07px] text-[#111112] [font-family:'Noto_Sans_KR',sans-serif] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2563EB]"
+    'inline-flex h-10 cursor-pointer items-center justify-center gap-1 rounded-[25px] border border-transparent bg-[var(--color-white)] px-3 py-2 text-[14px] font-normal leading-[160%] tracking-[-0.07px] text-[var(--color-gray-7)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]'
 
   return (
     <BaseLabelButton

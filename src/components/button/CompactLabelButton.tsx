@@ -5,7 +5,7 @@ import { cn } from '@/utils/cn'
 
 const COMPACT_LABEL_BUTTON_VARIANTS = {
   plain: '',
-  gray90: 'bg-[#E6E6E6]',
+  gray90: 'bg-[var(--color-gray-90)]',
 } as const
 
 export type MiniButtonVariant = keyof typeof COMPACT_LABEL_BUTTON_VARIANTS
@@ -22,7 +22,7 @@ export function MiniButton({
   variant = 'plain',
 }: MiniButtonProps) {
   const baseClassName =
-    "inline-flex cursor-pointer items-center justify-center gap-1 border-0 bg-transparent px-2 pb-1 pt-0.5 text-xs font-normal leading-[160%] text-[#909090] [font-family:'Noto_Sans_KR',sans-serif] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2563EB]"
+    'inline-flex cursor-pointer items-center justify-center gap-1 border-0 bg-transparent px-2 pb-1 pt-0.5 text-xs font-normal leading-[160%] text-[var(--color-gray-56)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]'
 
   return (
     <BaseLabelButton
