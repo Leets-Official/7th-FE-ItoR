@@ -1,9 +1,19 @@
 import clsx from 'clsx';
 import type { HTMLAttributes } from 'react';
 
-import { toastBaseStyle, toastVariantStyle } from './variants';
+import { DoneIcon, ErrorOutlineIcon } from '@/assets/icons';
+
+import { toastVariants } from './Toast.variants';
 
 export type ToastVariant = 'error' | 'success';
+const TOAST_ICONS = {
+  error: ErrorOutlineIcon,
+  success: DoneIcon,
+} as const;
+const TOAST_ROLE = {
+  error: 'alert',
+  success: 'status',
+} as const;
 
 export interface ToastProps extends HTMLAttributes<HTMLDivElement> {
   message: string;
@@ -16,18 +26,20 @@ export function Toast({
   variant,
   ...props
 }: ToastProps) {
-  const variantStyle = toastVariantStyle[variant];
+  const styles = toastVariants({ tone: variant });
+  const { icon, root, text } = styles;
+  const Icon = TOAST_ICONS[variant];
 
   return (
     <div
-      className={clsx(toastBaseStyle.root, variantStyle.color, className)}
-      role={variantStyle.role}
+      className={clsx(root(), className)}
+      role={TOAST_ROLE[variant]}
       {...props}
     >
-      <span className={toastBaseStyle.icon}>
-        <variantStyle.Icon aria-hidden="true" className="block h-full w-full" />
+      <span className={icon()}>
+        <Icon aria-hidden="true" className="block h-full w-full" />
       </span>
-      <span className={toastBaseStyle.text}>
+      <span className={text()}>
         {message}
       </span>
     </div>
