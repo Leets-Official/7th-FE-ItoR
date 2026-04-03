@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { useEffect } from 'react';
 import type { HTMLAttributes, MouseEventHandler } from 'react';
 
-import { modalBaseStyle, modalVariantStyle } from './variants';
+import { modalStyleMap, modalStyles } from './Modal.styles';
 
 export interface ModalProps extends HTMLAttributes<HTMLDivElement> {
   isOpen: boolean;
@@ -54,16 +54,16 @@ export function Modal({
 
   return (
     <div
-      className={modalBaseStyle.overlay}
+      className={modalStyles.overlay}
       role="presentation"
       onMouseDown={onClose}
     >
       <div
         className={clsx(
-          modalBaseStyle.panel,
+          modalStyles.panel,
           hasDescription
-            ? modalVariantStyle.withDescription
-            : modalVariantStyle.withoutDescription,
+            ? modalStyleMap.description.withDescription
+            : modalStyleMap.description.withoutDescription,
           className,
         )}
         role="dialog"
@@ -71,19 +71,19 @@ export function Modal({
         onMouseDown={(event) => event.stopPropagation()}
         {...props}
       >
-        <div className={modalBaseStyle.content}>
-          <div className={modalBaseStyle.textGroup}>
-            <p className={modalBaseStyle.title}>{title}</p>
+        <div className={modalStyles.content}>
+          <div className={modalStyles.textGroup}>
+            <p className={modalStyles.title}>{title}</p>
             {hasDescription ? (
-              <p className={modalBaseStyle.description}>{normalizedDescription}</p>
+              <p className={modalStyles.description}>{normalizedDescription}</p>
             ) : null}
           </div>
-          <div className={modalBaseStyle.actionGroup}>
+          <div className={modalStyles.actionGroup}>
             <button
               type="button"
               className={clsx(
-                modalBaseStyle.actionButton,
-                modalVariantStyle.cancel,
+                modalStyles.actionButton,
+                modalStyleMap.actionTone.cancel,
               )}
               onClick={(event) => {
                 onCancel?.(event);
@@ -95,8 +95,8 @@ export function Modal({
             <button
               type="button"
               className={clsx(
-                modalBaseStyle.actionButton,
-                modalVariantStyle.confirm,
+                modalStyles.actionButton,
+                modalStyleMap.actionTone.confirm,
               )}
               onClick={(event) => {
                 onConfirm?.(event);
@@ -104,7 +104,7 @@ export function Modal({
               }}
             >
               {confirmText}
-            </button>
+            </button>       
           </div>
         </div>
       </div>
