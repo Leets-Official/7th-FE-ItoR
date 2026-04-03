@@ -1,12 +1,16 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
-import { DropdownMenu } from '@/components/common/DropdownMenu';
+import { Dropdown } from '@/components/common/DropdownMenu';
 import { Modal } from '@/components/common/Modal';
 import { Toast } from '@/components/common/Toast';
+import { useDisclosure } from '@/hooks';
 
 export function PlaygroundPage() {
-  const [isDescriptionModalOpen, setIsDescriptionModalOpen] = useState(false);
-  const [isSimpleModalOpen, setIsSimpleModalOpen] = useState(false);
+  const descriptionModal = useDisclosure();
+  const simpleModal = useDisclosure();
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [selectedValue, setSelectedValue] = useState('menu 1');
 
   return (
     <div className="flex flex-col gap-6 p-8">
@@ -23,38 +27,44 @@ export function PlaygroundPage() {
           <button
             type="button"
             className="rounded-sm border border-gray-96 bg-white px-4 py-2 text-sm text-black"
-            onClick={() => setIsDescriptionModalOpen(true)}
+            onClick={descriptionModal.open}
           >
             설명 있는 모달 열기
           </button>
           <button
             type="button"
             className="rounded-sm border border-gray-96 bg-white px-4 py-2 text-sm text-black"
-            onClick={() => setIsSimpleModalOpen(true)}
+            onClick={simpleModal.open}
           >
             설명 없는 모달 열기
           </button>
         </div>
         <Modal
-          isOpen={isDescriptionModalOpen}
-          onClose={() => setIsDescriptionModalOpen(false)}
+          isOpen={descriptionModal.isOpen}
+          onClose={descriptionModal.close}
           title={'Title line one\nTitle line two'}
           description={'description line one\ndescription line two'}
         />
         <Modal
-          isOpen={isSimpleModalOpen}
-          onClose={() => setIsSimpleModalOpen(false)}
+          isOpen={simpleModal.isOpen}
+          onClose={simpleModal.close}
           title={'Title line one\nTitle line two'}
         />
       </section>
       <section className="flex flex-col gap-4">
         <h1 className="text-2xl font-bold text-character-title">Dropdown</h1>
         <div className="flex flex-col gap-8">
-          <DropdownMenu
-            items={[
-              { id: 'menu-1', label: 'menu 1' },
-              { id: 'menu-2', label: 'menu 2' },
-            ]}
+          <Dropdown
+            label="메뉴"
+            value={selectedValue}
+            options={['menu 1', 'menu 2']}
+            isOpen={isDropdownOpen}
+            dropdownRef={dropdownRef}
+            onToggle={() => setIsDropdownOpen((prev) => !prev)}
+            onSelect={(value) => {
+              setSelectedValue(value);
+              setIsDropdownOpen(false);
+            }}
           />
         </div>
       </section>
