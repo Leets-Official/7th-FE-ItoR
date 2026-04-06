@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { IconAdd } from '@shared/assets/icons';
-import { Button } from './button';
+import { Button } from './Button';
 
 function ButtonGallery() {
   return (
