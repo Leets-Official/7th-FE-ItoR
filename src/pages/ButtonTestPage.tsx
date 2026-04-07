@@ -1,6 +1,6 @@
 import { MiniButton } from '@/components/button/CompactLabelButton'
 import { Button } from '@/components/button/StartGitLogButton'
-import { Modal } from '@/components/modal/DeleteConfirmModal'
+import { DeleteConfirmModal } from '@/components/modal/DeleteConfirmModal'
 import { Toast } from '@/components/toast/Toast'
 import './ButtonTestPage.css'
 
@@ -42,8 +42,8 @@ export default function ButtonTestPage() {
         <div className="button-test-page__group">
           <h2 className="button-test-page__subtitle">Modal</h2>
           <div className="button-test-page__modal-preview" aria-label="삭제 확인 모달 테스트 영역">
-            <Modal />
-            <Modal variant="titleOnly" />
+            <DeleteConfirmModal />
+            <DeleteConfirmModal variant="titleOnly" />
           </div>
         </div>
         <div className="button-test-page__group">
