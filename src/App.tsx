@@ -1,121 +1,124 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useMemo, useState } from 'react';
+
+import { PostList } from './components/blog/PostList';
+import { DropdownMenu, Icon, Input, MenuItem, MenuShell } from './components/common';
+import { Layout } from './components/layout/Layout';
+
+const posts = [
+  {
+    title: '16 Title one line',
+    excerpt:
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and an...",
+    author: '닉네임',
+    date: 'Feb 17, 2025',
+    category: 'Frontend',
+    tags: ['design-system', 'react'],
+    likes: 18,
+    comments: 0,
+  },
+  {
+    title: '16 Title one line',
+    excerpt: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+    author: '닉네임',
+    date: 'Feb 17, 2025',
+    category: 'UI',
+    tags: ['layout', 'responsive'],
+    likes: 27,
+    comments: 0,
+  },
+  {
+    title: '16 Title one line',
+    excerpt:
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type an...",
+    author: '닉네임',
+    date: 'Feb 17, 2025',
+    category: 'Component',
+    tags: ['button', 'feedback'],
+    likes: 12,
+    comments: 0,
+  },
+  {
+    title: '16 Title one line',
+    excerpt: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+    author: '닉네임',
+    date: 'Feb 17, 2025',
+    category: 'Editor',
+    tags: ['editor', 'ux'],
+    likes: 21,
+    comments: 0,
+  },
+];
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState('');
+
+  const filteredPosts = useMemo(() => {
+    return posts.filter((post) => {
+      const keyword = search.trim().toLowerCase();
+      if (!keyword) return true;
+
+      return [post.title, post.excerpt, post.author, ...post.tags].join(' ').toLowerCase().includes(keyword);
+    });
+  }, [search]);
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <Layout>
+      <div className="mx-auto max-w-[880px]">
+        <section className="mb-10 rounded-[24px] border border-dashed border-violet-300 bg-[#ece6ff]/50 p-5">
+          <div className="grid gap-6 md:grid-cols-3">
+            <div className="space-y-3">
+              <p className="text-sm font-semibold text-violet-600">menu</p>
+              <MenuShell>
+                <span className="text-sm text-[#2e2e2e]">☒</span>
+              </MenuShell>
+            </div>
 
-      <div className="ticks"></div>
+            <div className="space-y-3">
+              <p className="text-sm font-semibold text-violet-600">dropdown</p>
+              <DropdownMenu>
+                <MenuItem>menu 1</MenuItem>
+              </DropdownMenu>
+              <DropdownMenu>
+                <MenuItem>menu 1</MenuItem>
+                <MenuItem>menu 1</MenuItem>
+              </DropdownMenu>
+            </div>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+            <div className="space-y-3">
+              <p className="text-sm font-semibold text-violet-600">dropdown menu group</p>
+              <DropdownMenu className="min-w-[170px]">
+                <MenuItem>menu 1</MenuItem>
+                <MenuItem active>menu 1</MenuItem>
+              </DropdownMenu>
+            </div>
+          </div>
+        </section>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+        <div className="mb-8 flex items-start justify-between gap-4">
+          <div className="w-full max-w-sm">
+            <Input
+              id="post-search"
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+              placeholder="검색"
+              leftAddon={<Icon name="search" size={16} />}
+            />
+          </div>
+
+          <button
+            type="button"
+            className="inline-flex items-center gap-2 pt-2 text-[13px] font-medium text-[#8a8a8a] transition-colors hover:text-slate-900"
+          >
+            <Icon name="edit" size={14} />
+            깃로그 쓰기
+          </button>
+        </div>
+
+        <PostList posts={filteredPosts} currentPage={page} totalPages={5} onPageChange={setPage} />
+      </div>
+    </Layout>
+  );
 }
 
-export default App
+export default App;
