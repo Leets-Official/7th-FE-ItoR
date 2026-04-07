@@ -1,9 +1,7 @@
 import type { ReactNode } from 'react'
-import type { ButtonCommonProps } from '@/components/button/types'
+import type { ButtonCommonProps } from '../Button.types'
+import { BASE_LABEL_BUTTON_CLASS } from './BaseLabelButton.style'
 import { cn } from '@/utils/cn'
-
-const BASE_LABEL_BUTTON_CLASS =
-  'inline-flex cursor-pointer items-center justify-center gap-1 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] disabled:cursor-not-allowed disabled:opacity-50'
 
 type BaseLabelButtonProps = Omit<ButtonCommonProps, 'aria-label' | 'children'> & {
   ariaLabel?: string

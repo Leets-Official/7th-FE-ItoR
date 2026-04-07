@@ -1,7 +1,6 @@
-import { MiniButton } from '@/components/button/CompactLabelButton'
-import { Button } from '@/components/button/StartGitLogButton'
-import { DeleteConfirmModal } from '@/components/modal/DeleteConfirmModal'
-import { Toast } from '@/components/toast/Toast'
+import { Button, MiniButton } from '@/components/button'
+import { DeleteConfirmModal } from '@/components/modal'
+import { Toast } from '@/components/toast'
 import './ButtonTestPage.css'
 
 const START_BUTTON_VARIANTS = [

@@ -1,5 +1,14 @@
 import { useId, type ComponentPropsWithoutRef } from 'react'
-import { Button } from '@/components/button/StartGitLogButton'
+import { Button } from '@/components/button'
+import {
+  DELETE_CONFIRM_CANCEL_BUTTON_CLASS,
+  DELETE_CONFIRM_DELETE_BUTTON_CLASS,
+  MODAL_CONTENT_CLASS,
+  MODAL_DESCRIPTION_CLASS,
+  MODAL_FOOTER_CLASS,
+  MODAL_ROOT_CLASS,
+  MODAL_TITLE_CLASS,
+} from './DeleteConfirmModal.style'
 import { cn } from '@/utils/cn'
 
 type ModalRootProps = ComponentPropsWithoutRef<'section'> & {
@@ -14,10 +23,7 @@ function ModalRoot({ className, children, describedBy, labelledBy, ...props }: M
       aria-modal="true"
       aria-labelledby={labelledBy}
       aria-describedby={describedBy}
-      className={cn(
-        'flex w-[326px] flex-col items-start gap-6 rounded-[4px] bg-[var(--color-white)] px-4 pb-4 pt-6 shadow-[0_2px_8px_0_rgba(0,0,0,0.10)]',
-        className,
-      )}
+      className={cn(MODAL_ROOT_CLASS, className)}
       {...props}
     >
       {children}
@@ -28,42 +34,21 @@ function ModalRoot({ className, children, describedBy, labelledBy, ...props }: M
 type ModalSlotProps = ComponentPropsWithoutRef<'div'>
 
 function ModalContent({ className, ...props }: ModalSlotProps) {
-  return (
-    <div
-      className={cn('flex w-full self-stretch flex-col items-start gap-2 rounded-xl px-1', className)}
-      {...props}
-    />
-  )
+  return <div className={cn(MODAL_CONTENT_CLASS, className)} {...props} />
 }
 
 function ModalFooter({ className, ...props }: ModalSlotProps) {
-  return <div className={cn('flex w-full gap-2', className)} {...props} />
+  return <div className={cn(MODAL_FOOTER_CLASS, className)} {...props} />
 }
 
 type ModalTextProps = ComponentPropsWithoutRef<'p'>
 
 function ModalTitle({ className, ...props }: ModalTextProps) {
-  return (
-    <p
-      className={cn(
-        'm-0 whitespace-pre-line text-[14px] font-normal leading-[160%] tracking-[-0.07px] text-[var(--color-black)]',
-        className,
-      )}
-      {...props}
-    />
-  )
+  return <p className={cn(MODAL_TITLE_CLASS, className)} {...props} />
 }
 
 function ModalDescription({ className, ...props }: ModalTextProps) {
-  return (
-    <p
-      className={cn(
-        'm-0 whitespace-pre-line text-[14px] font-normal leading-[160%] tracking-[-0.07px] text-[var(--color-gray-56)]',
-        className,
-      )}
-      {...props}
-    />
-  )
+  return <p className={cn(MODAL_DESCRIPTION_CLASS, className)} {...props} />
 }
 
 export const Modal = Object.assign(ModalRoot, {
@@ -115,14 +100,14 @@ export function DeleteConfirmModal({
       </Modal.Content>
       <Modal.Footer>
         <Button
-          className="flex-1 rounded-[2px] border-[var(--color-gray-96)] text-[var(--color-black)]"
+          className={DELETE_CONFIRM_CANCEL_BUTTON_CLASS}
           label={cancelText}
           onClick={onCancel}
           showIcon={false}
           variant="grayOutline"
         />
         <Button
-          className="flex-1 rounded-[2px]"
+          className={DELETE_CONFIRM_DELETE_BUTTON_CLASS}
           label={deleteText}
           onClick={onDelete}
           showIcon={false}
