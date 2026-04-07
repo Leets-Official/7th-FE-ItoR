@@ -1,11 +1,14 @@
 import type { ReactElement, SVGProps } from 'react';
 
 type IconName =
+  | 'menu'
   | 'search'
   | 'close'
   | 'chevron-left'
   | 'chevron-right'
   | 'edit'
+  | 'message-square'
+  | 'more-vertical'
   | 'check'
   | 'alert-circle'
   | 'heart'
@@ -18,6 +21,13 @@ export interface IconProps extends SVGProps<SVGSVGElement> {
 }
 
 const iconPaths: Record<IconName, ReactElement> = {
+  menu: (
+    <>
+      <path d="M4 7h16" />
+      <path d="M4 12h16" />
+      <path d="M4 17h16" />
+    </>
+  ),
   search: (
     <>
       <circle cx="11" cy="11" r="6" />
@@ -28,6 +38,18 @@ const iconPaths: Record<IconName, ReactElement> = {
   'chevron-left': <path d="M14 6l-6 6 6 6" />,
   'chevron-right': <path d="M10 6l6 6-6 6" />,
   edit: <path d="M4 20h4l10-10-4-4L4 16v4zm8-12l4 4" />,
+  'message-square': (
+    <>
+      <path d="M5 6.5h14v9H9l-4 3v-12z" />
+    </>
+  ),
+  'more-vertical': (
+    <>
+      <circle cx="12" cy="6" r="1.2" fill="currentColor" stroke="none" />
+      <circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none" />
+      <circle cx="12" cy="18" r="1.2" fill="currentColor" stroke="none" />
+    </>
+  ),
   check: <path d="M5 13l4 4L19 7" />,
   'alert-circle': (
     <>
