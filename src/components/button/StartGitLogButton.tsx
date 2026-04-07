@@ -26,13 +26,14 @@ export function Button({
   ...buttonProps
 }: ButtonProps) {
   const baseClassName =
-    'inline-flex h-10 cursor-pointer items-center justify-center gap-1 rounded-[25px] border border-transparent bg-[var(--color-white)] px-3 py-2 text-[14px] font-normal leading-[160%] tracking-[-0.07px] text-[var(--color-gray-7)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]'
+    'h-10 rounded-[25px] border border-transparent bg-[var(--color-white)] px-3 py-2 text-[14px] font-normal leading-[160%] tracking-[-0.07px] text-[var(--color-gray-7)]'
 
   return (
     <BaseLabelButton
       ariaLabel={ariaLabel}
       label={label}
-      className={cn(baseClassName, BUTTON_VARIANTS[variant], className)}
+      buttonClassName={cn(baseClassName, BUTTON_VARIANTS[variant])}
+      className={className}
       icon={
         <span className="flex size-6 items-center justify-center" aria-hidden="true">
           <CreateIcon className="block size-6" />

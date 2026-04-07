@@ -22,13 +22,14 @@ export function MiniButton({
   ...buttonProps
 }: MiniButtonProps) {
   const baseClassName =
-    'inline-flex cursor-pointer items-center justify-center gap-1 border-0 bg-transparent px-2 pb-1 pt-0.5 text-xs font-normal leading-[160%] text-[var(--color-gray-56)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]'
+    'border-0 bg-transparent px-2 pb-1 pt-0.5 text-xs font-normal leading-[160%] text-[var(--color-gray-56)]'
 
   return (
     <BaseLabelButton
       ariaLabel={ariaLabel}
       label={label}
-      className={cn(baseClassName, COMPACT_LABEL_BUTTON_VARIANTS[variant], className)}
+      buttonClassName={cn(baseClassName, COMPACT_LABEL_BUTTON_VARIANTS[variant])}
+      className={className}
       icon={<CreateIcon className="size-3.5 shrink-0" />}
       {...buttonProps}
     />
