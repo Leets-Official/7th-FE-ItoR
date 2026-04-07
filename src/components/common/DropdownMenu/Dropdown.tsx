@@ -3,6 +3,7 @@ import type { RefObject } from 'react';
 import { cn } from '@/utils/cn';
 
 import { dropdownStyles } from './Dropdown.styles';
+import { MenuItem } from './MenuItem';
 
 export interface DropdownProps {
   label: string;
@@ -39,23 +40,18 @@ export function Dropdown({
       <div className={dropdownStyles.surface}>
         <span aria-hidden="true" className={dropdownStyles.arrow} />
         <div className={cn(dropdownStyles.root, error && 'ring-1 ring-warning')}>
-          <button
-            type="button"
-            className={cn(dropdownStyles.item, dropdownStyles.trigger)}
+          <MenuItem
+            label={value || `${label}를 선택해 주세요`}
+            isTrigger
             onClick={onToggle}
-          >
-            {value || `${label}를 선택해 주세요`}
-          </button>
+          />
           {isOpen && visibleOptions.length > 0
             ? visibleOptions.map((option) => (
-              <button
+              <MenuItem
                 key={option}
-                type="button"
+                label={option}
                 onClick={() => onSelect(option)}
-                className={dropdownStyles.item}
-              >
-                {option}
-              </button>
+              />
             ))
             : null}
         </div>
