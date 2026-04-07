@@ -4,7 +4,7 @@ import PostList from '@pages/post/post-list/components/post-list/PostList.tsx';
 function PostListPage() {
   return (
     <div>
-      <FetchBoundary loadingFallback={<div>게시글 목록 가져오는중</div>}>
+      <FetchBoundary loadingFallback={<div>Loading posts...</div>}>
         <PostList />
       </FetchBoundary>
     </div>

@@ -2,12 +2,11 @@ import { Outlet } from 'react-router';
 
 function RootLayout() {
   return (
-    <>
-      <header>Header</header>
+    <div className='min-h-screen bg-[#101010]'>
       <main>
         <Outlet />
       </main>
-    </>
+    </div>
   );
 }
 
