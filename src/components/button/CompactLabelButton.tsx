@@ -1,5 +1,5 @@
 import { BaseLabelButton } from '@/components/button/BaseLabelButton'
-import { CreateIcon } from '@/components/button/CreateIcon'
+import { CreateIcon } from '@/assets/icons/CreateIcon'
 import type { ButtonCommonProps } from '@/components/button/types'
 import { cn } from '@/utils/cn'
 
