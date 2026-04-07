@@ -3,13 +3,38 @@ import { CreateIcon } from '@/assets/icons/CreateIcon'
 import type { ButtonCommonProps } from '@/components/button/types'
 import { cn } from '@/utils/cn'
 
+const BUTTON_TONE = {
+  point: 'text-[var(--color-point)]',
+  gray: 'text-[var(--color-gray-56)]',
+  inverse: 'text-[var(--color-white)]',
+} as const
+
+const BUTTON_SURFACE = {
+  white: 'bg-[var(--color-white)]',
+  grayFilled: 'bg-[var(--color-gray-90)]',
+  active: 'bg-[var(--color-gray-7)]',
+} as const
+
+const BUTTON_LAYOUT = {
+  default:
+    'h-10 rounded-[25px] border px-3 py-2 text-[14px] font-normal leading-[160%] tracking-[-0.07px]',
+  plain:
+    'h-auto items-start rounded-[25px] border border-transparent px-3 py-2 text-[14px] font-normal leading-[160%] tracking-[-0.07px]',
+} as const
+
+const BUTTON_BORDER = {
+  point: 'border-[var(--color-point)]',
+  gray: 'border-[var(--color-gray-56)]',
+  none: 'border-transparent',
+} as const
+
 const BUTTON_VARIANTS = {
-  point: 'border-[var(--color-point)] text-[var(--color-point)]',
-  grayOutline: 'border-[var(--color-gray-56)] bg-[var(--color-white)] text-[var(--color-gray-56)]',
-  grayPlain: 'h-auto items-start border-transparent bg-[var(--color-white)] text-[var(--color-gray-56)]',
-  active: 'border-transparent bg-[var(--color-gray-7)] text-[var(--color-white)]',
-  grayFilledOutline: 'border-[var(--color-gray-56)] bg-[var(--color-gray-90)] text-[var(--color-gray-56)]',
-  grayFilled: 'h-auto items-start border-transparent bg-[var(--color-gray-90)] text-[var(--color-gray-56)]',
+  point: { tone: 'point', surface: 'white', layout: 'default', border: 'point' },
+  grayOutline: { tone: 'gray', surface: 'white', layout: 'default', border: 'gray' },
+  grayPlain: { tone: 'gray', surface: 'white', layout: 'plain', border: 'none' },
+  active: { tone: 'inverse', surface: 'active', layout: 'default', border: 'none' },
+  grayFilledOutline: { tone: 'gray', surface: 'grayFilled', layout: 'default', border: 'gray' },
+  grayFilled: { tone: 'gray', surface: 'grayFilled', layout: 'plain', border: 'none' },
 } as const
 
 export type ButtonVariant = keyof typeof BUTTON_VARIANTS
@@ -25,14 +50,18 @@ export function Button({
   variant = 'point',
   ...buttonProps
 }: ButtonProps) {
-  const baseClassName =
-    'h-10 rounded-[25px] border border-transparent bg-[var(--color-white)] px-3 py-2 text-[14px] font-normal leading-[160%] tracking-[-0.07px] text-[var(--color-gray-7)]'
+  const variantRecipe = BUTTON_VARIANTS[variant]
 
   return (
     <BaseLabelButton
       ariaLabel={ariaLabel}
       label={label}
-      buttonClassName={cn(baseClassName, BUTTON_VARIANTS[variant])}
+      buttonClassName={cn(
+        BUTTON_LAYOUT[variantRecipe.layout],
+        BUTTON_SURFACE[variantRecipe.surface],
+        BUTTON_TONE[variantRecipe.tone],
+        BUTTON_BORDER[variantRecipe.border],
+      )}
       className={className}
       icon={
         <span className="flex size-6 items-center justify-center" aria-hidden="true">
