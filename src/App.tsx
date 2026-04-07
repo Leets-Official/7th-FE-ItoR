@@ -1,3 +1,5 @@
+import ButtonTestPage from '@/pages/ButtonTestPage'
+
 export default function App() {
-  return null
+  return <ButtonTestPage />
 }
