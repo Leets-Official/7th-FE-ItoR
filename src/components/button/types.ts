@@ -1,6 +1,3 @@
-export type ButtonCommonProps = {
-  ariaLabel?: string
-  className?: string
-  label?: string
-  onClick?: () => void
-}
+import type { ButtonHTMLAttributes } from 'react'
+
+export type ButtonCommonProps = ButtonHTMLAttributes<HTMLButtonElement>

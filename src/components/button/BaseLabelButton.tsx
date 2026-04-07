@@ -1,11 +1,10 @@
 import type { ReactNode } from 'react'
+import type { ButtonCommonProps } from '@/components/button/types'
 
-type BaseLabelButtonProps = {
+type BaseLabelButtonProps = Omit<ButtonCommonProps, 'aria-label' | 'children'> & {
   ariaLabel?: string
-  className?: string
   icon?: ReactNode
   label?: string
-  onClick?: () => void
 }
 
 export function BaseLabelButton({
@@ -13,12 +12,18 @@ export function BaseLabelButton({
   className,
   icon,
   label = '깃로그 시작하기',
-  onClick,
+  type,
+  ...buttonProps
 }: BaseLabelButtonProps) {
   const resolvedAriaLabel = ariaLabel ?? label
 
   return (
-    <button type="button" aria-label={resolvedAriaLabel} className={className} onClick={onClick}>
+    <button
+      type={type ?? 'button'}
+      aria-label={resolvedAriaLabel}
+      className={className}
+      {...buttonProps}
+    >
       {icon}
       <span>{label}</span>
     </button>
