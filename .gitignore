@@ -1,1 +1,26 @@
+# node
 node_modules/
+
+# build 결과물
+dist/
+.vite/
+
+# 환경 변수
+.env
+.env.*
+
+# 로그
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# 기타
+*.local
