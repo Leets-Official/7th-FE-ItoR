@@ -1,7 +1,11 @@
 import { useRef, useState } from 'react';
 
+import { Blank } from '@/components/common/Blank';
+import { Button } from '@/components/common/Button';
 import { Dropdown } from '@/components/common/DropdownMenu';
 import { Modal } from '@/components/common/Modal';
+import { Pagination } from '@/components/common/Pagination';
+import { PageHeader, PageHeaderLegacy } from '@/components/common/PageHeader';
 import { Toast } from '@/components/common/Toast';
 import { useDisclosure } from '@/hooks';
 
@@ -11,6 +15,7 @@ export function PlaygroundPage() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState('menu 1');
+  const [page, setPage] = useState(1);
 
   return (
     <div className="flex flex-col gap-6 p-8">
@@ -66,6 +71,75 @@ export function PlaygroundPage() {
               setIsDropdownOpen(false);
             }}
           />
+        </div>
+      </section>
+      <section className="flex flex-col gap-4">
+        <h1 className="text-2xl font-bold text-character-title">PageHeader</h1>
+        <div className="flex flex-col gap-6">
+          <div className="rounded-md border border-gray-90">
+            <PageHeader type="main" />
+          </div>
+          <div className="rounded-md border border-gray-90">
+            <PageHeader type="detail" />
+          </div>
+          <div className="rounded-md border border-gray-90">
+            <PageHeader type="write" />
+          </div>
+          <div className="rounded-md border border-gray-90">
+            <PageHeaderLegacy />
+          </div>
+        </div>
+      </section>
+      <section className="flex flex-col gap-4">
+        <h1 className="text-2xl font-bold text-character-title">Blank</h1>
+        <div className="flex flex-col gap-2 bg-[#cbc5e8] p-5">
+          <Blank size={20} />
+          <Blank size={32} />
+          <Blank size={64} />
+        </div>
+      </section>
+      <section className="flex flex-col gap-4">
+        <h1 className="text-2xl font-bold text-character-title">Pagination</h1>
+        <div className="bg-[#cbc5e8] p-4">
+          <Pagination page={page} totalPages={5} onPageChange={setPage} />
+        </div>
+      </section>
+      <section className="flex flex-col gap-4">
+        <h1 className="text-2xl font-bold text-character-title">Button</h1>
+        <div className="flex flex-col gap-6 bg-[#cbc5e8] p-5">
+          <div className="flex flex-wrap items-center gap-4">
+            <Button intent="primary">깃로그 시작하기</Button>
+          </div>
+          <div className="flex flex-wrap items-center gap-4">
+            <Button intent="gray">깃로그 시작하기</Button>
+            <Button intent="gray" pressed>
+              깃로그 시작하기
+            </Button>
+          </div>
+          <div className="flex flex-wrap items-center gap-4">
+            <Button intent="gray" disabled>
+              깃로그 시작하기
+            </Button>
+            <Button intent="gray" pressed disabled>
+              깃로그 시작하기
+            </Button>
+          </div>
+          <div className="flex flex-wrap items-center gap-4">
+            <Button intent="dark">
+              깃로그 시작하기
+            </Button>
+            <Button intent="dark" pressed>
+              깃로그 시작하기
+            </Button>
+          </div>
+          <div className="flex flex-wrap items-center gap-4">
+            <Button size="text" intent="gray">
+              깃로그 시작하기
+            </Button>
+            <Button size="text" intent="gray" pressed disabled>
+              깃로그 시작하기
+            </Button>
+          </div>
         </div>
       </section>
     </div>
