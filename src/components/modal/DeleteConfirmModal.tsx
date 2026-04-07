@@ -1,4 +1,5 @@
 import { useId } from 'react'
+import { Button } from '@/components/button/StartGitLogButton'
 import { cn } from '@/utils/cn'
 
 type ModalVariant = 'withDescription' | 'titleOnly'
@@ -57,20 +58,20 @@ export function Modal({
         ) : null}
       </div>
       <div className="flex w-full gap-2">
-        <button
-          type="button"
-          className="flex flex-[1_0_0] cursor-pointer items-center justify-center gap-2 rounded-[2px] border border-[var(--color-gray-96)] bg-[var(--color-white)] px-3 py-2 text-[14px] font-normal leading-[160%] tracking-[-0.07px] text-[var(--color-black)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]"
+        <Button
+          className="flex-1 rounded-[2px] border-[var(--color-gray-96)] text-[var(--color-black)]"
+          label={cancelText}
           onClick={onCancel}
-        >
-          {cancelText}
-        </button>
-        <button
-          type="button"
-          className="flex flex-[1_0_0] cursor-pointer items-center justify-center gap-2 rounded-[2px] border-0 bg-[var(--color-negative)] px-3 py-2 text-[14px] font-normal leading-[160%] tracking-[-0.07px] text-[var(--color-white)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]"
+          showIcon={false}
+          variant="grayOutline"
+        />
+        <Button
+          className="flex-1 rounded-[2px]"
+          label={deleteText}
           onClick={onDelete}
-        >
-          {deleteText}
-        </button>
+          showIcon={false}
+          variant="negative"
+        />
       </div>
     </section>
   )

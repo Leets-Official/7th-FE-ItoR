@@ -13,6 +13,7 @@ const BUTTON_SURFACE = {
   white: 'bg-[var(--color-white)]',
   grayFilled: 'bg-[var(--color-gray-90)]',
   active: 'bg-[var(--color-gray-7)]',
+  negative: 'bg-[var(--color-negative)]',
 } as const
 
 const BUTTON_LAYOUT = {
@@ -33,6 +34,7 @@ const BUTTON_VARIANTS = {
   grayOutline: { tone: 'gray', surface: 'white', layout: 'default', border: 'gray' },
   grayPlain: { tone: 'gray', surface: 'white', layout: 'plain', border: 'none' },
   active: { tone: 'inverse', surface: 'active', layout: 'default', border: 'none' },
+  negative: { tone: 'inverse', surface: 'negative', layout: 'default', border: 'none' },
   grayFilledOutline: { tone: 'gray', surface: 'grayFilled', layout: 'default', border: 'gray' },
   grayFilled: { tone: 'gray', surface: 'grayFilled', layout: 'plain', border: 'none' },
 } as const
@@ -40,6 +42,7 @@ const BUTTON_VARIANTS = {
 export type ButtonVariant = keyof typeof BUTTON_VARIANTS
 
 type ButtonProps = ButtonCommonProps & {
+  showIcon?: boolean
   variant?: ButtonVariant
 }
 
@@ -47,6 +50,7 @@ export function Button({
   ariaLabel,
   className,
   label = '깃로그 시작하기',
+  showIcon = true,
   variant = 'point',
   ...buttonProps
 }: ButtonProps) {
@@ -64,9 +68,11 @@ export function Button({
       )}
       className={className}
       icon={
+        showIcon ? (
         <span className="flex size-6 items-center justify-center" aria-hidden="true">
           <CreateIcon className="block size-6" />
         </span>
+        ) : undefined
       }
       {...buttonProps}
     />
