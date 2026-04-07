@@ -1,5 +1,6 @@
-import clsx from 'clsx';
 import type { RefObject } from 'react';
+
+import { cn } from '@/utils/cn';
 
 import { dropdownStyles } from './Dropdown.styles';
 
@@ -33,14 +34,14 @@ export function Dropdown({
     : options;
 
   return (
-    <div ref={dropdownRef} className={clsx('relative flex flex-col gap-2', className)}>
+    <div ref={dropdownRef} className={cn('relative flex flex-col gap-2', className)}>
       <span className="text-sm font-regular leading-[22px] tracking-[-0.07px] text-black">{label}</span>
       <div className={dropdownStyles.surface}>
         <span aria-hidden="true" className={dropdownStyles.arrow} />
-        <div className={clsx(dropdownStyles.root, error && 'ring-1 ring-warning')}>
+        <div className={cn(dropdownStyles.root, error && 'ring-1 ring-warning')}>
           <button
             type="button"
-            className={clsx(dropdownStyles.item, dropdownStyles.trigger)}
+            className={cn(dropdownStyles.item, dropdownStyles.trigger)}
             onClick={onToggle}
           >
             {value || `${label}를 선택해 주세요`}
@@ -60,7 +61,7 @@ export function Dropdown({
         </div>
       </div>
       {helperText ? (
-        <span className={clsx('text-xs leading-[19px] text-gray-56', error && 'text-warning')}>
+        <span className={cn('text-xs leading-[19px] text-gray-56', error && 'text-warning')}>
           {helperText}
         </span>
       ) : null}
