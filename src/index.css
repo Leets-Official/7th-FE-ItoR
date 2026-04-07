@@ -1,5 +1,18 @@
 @import 'tailwindcss';
 
+@theme {
+  --color-white: #fff;
+  --color-black: #111111;
+  --color-gray-7: #111112;
+  --color-gray-56: #909090;
+  --color-gray-90: #e6e6e6;
+  --color-gray-96: #f5f5f5;
+  --color-point: #00a1ff;
+  --color-positive: #15dc5e;
+  --color-negative: #ff3f3f;
+  --color-focus: #3b82f6;
+}
+
 :root {
   --font-body:
     'Noto Sans KR',
@@ -8,16 +21,6 @@
     BlinkMacSystemFont,
     'Segoe UI',
     sans-serif;
-  --color-white: #fff;
-  --color-black: #000;
-  --color-gray-7: #111112;
-  --color-gray-56: #909090;
-  --color-gray-90: #e6e6e6;
-  --color-gray-96: #f5f5f5;
-  --color-point: #00a1ff;
-  --color-positive: #15dc5e;
-  --color-negative: #ff3f3f;
-  --color-focus: #2563eb;
   --surface-app: #f9fafb;
   color: var(--color-gray-7);
   background-color: var(--surface-app);
