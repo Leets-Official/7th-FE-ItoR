@@ -1,39 +1,10 @@
 import { startTransition, useState } from 'react';
+import { Link } from 'react-router';
+import { getAccessToken } from '@apis/core';
 import { useSuspensePostListQuery, type PostContent, type PostSummary } from '@/apis';
-import { Header, Pagination } from '@shared/ui';
-
-function MenuIcon() {
-  return (
-    <svg fill='none' viewBox='0 0 24 24'>
-      <path
-        d='M5 7h14M5 12h14M5 17h14'
-        stroke='currentColor'
-        strokeLinecap='round'
-        strokeWidth='1.8'
-      />
-    </svg>
-  );
-}
-
-function WriteIcon() {
-  return (
-    <svg fill='none' viewBox='0 0 24 24'>
-      <path
-        d='M4 17.25V20h2.75L17.8 8.94l-2.75-2.75L4 17.25Zm15.71-9.04a1 1 0 0 0 0-1.42l-2.5-2.5a1 1 0 0 0-1.42 0l-.98.98 3.92 3.92.98-.98Z'
-        fill='currentColor'
-      />
-    </svg>
-  );
-}
-
-function SearchIcon() {
-  return (
-    <svg fill='none' viewBox='0 0 24 24'>
-      <circle cx='11' cy='11' r='5.5' stroke='currentColor' strokeWidth='1.8' />
-      <path d='m15.5 15.5 4 4' stroke='currentColor' strokeLinecap='round' strokeWidth='1.8' />
-    </svg>
-  );
-}
+import { ROUTE_PATH } from '@apps/routes/path.ts';
+import { Pagination } from '@shared/ui';
+import PostAccessAuthModals from '@pages/post/post-list/components/post-access-auth-modals/PostAccessAuthModals.tsx';
 
 function formatDate(dateString: string) {
   const date = new Date(dateString);
@@ -61,14 +32,28 @@ function getThumbnail(post: PostSummary) {
   return getFirstContent(post.contents, 'IMAGE');
 }
 
+function getImageSrc(src: string | null | undefined) {
+  const normalizedSrc = src?.trim();
+
+  return normalizedSrc ? normalizedSrc : null;
+}
+
 function PostAuthorMeta({ post }: { post: PostSummary }) {
+  const profileImageSrc = getImageSrc(post.profileUrl);
+
   return (
     <div className='flex items-center gap-[0.8rem] text-[1.2rem] text-[#9b9b9b]'>
-      <img
-        alt={`${post.nickName} profile`}
-        className='size-[2.4rem] rounded-full border border-[#ececec] object-cover'
-        src={post.profileUrl}
-      />
+      {profileImageSrc ? (
+        <img
+          alt={`${post.nickName} profile`}
+          className='size-[2.4rem] rounded-full border border-[#ececec] object-cover'
+          src={profileImageSrc}
+        />
+      ) : (
+        <div className='flex size-[2.4rem] items-center justify-center rounded-full bg-[#111111] text-[1rem] font-semibold text-white'>
+          {post.nickName.slice(0, 1).toUpperCase()}
+        </div>
+      )}
       <span className='font-medium text-[#6c6c6c]'>{post.nickName}</span>
       <span aria-hidden='true'>·</span>
       <span>{formatDate(post.createdAt)}</span>
@@ -79,7 +64,7 @@ function PostAuthorMeta({ post }: { post: PostSummary }) {
 }
 
 function PostThumbnail({ post }: { post: PostSummary }) {
-  const thumbnail = getThumbnail(post);
+  const thumbnail = getImageSrc(getThumbnail(post));
 
   if (thumbnail) {
     return (
@@ -98,21 +83,34 @@ function PostThumbnail({ post }: { post: PostSummary }) {
   );
 }
 
-function PostListItem({ post }: { post: PostSummary }) {
+function PostListItem({ post, onRequireAuth }: { post: PostSummary; onRequireAuth: () => void }) {
   return (
-    <article className='grid grid-cols-[1fr_auto] gap-[1.6rem] border-b border-[#efefef] py-[2rem] md:gap-[2.4rem] md:py-[2.4rem]'>
-      <div className='min-w-0'>
-        <h2 className='truncate text-[2.4rem] font-semibold tracking-[-0.03em] text-[#111111] md:text-[3.2rem]'>
-          {post.title}
-        </h2>
-        <p className='mt-[0.8rem] line-clamp-2 text-[1.5rem] leading-[1.55] text-[#7a7a7a] md:text-[1.8rem]'>
-          {getExcerpt(post)}
-        </p>
-        <div className='mt-[1.6rem]'>
-          <PostAuthorMeta post={post} />
+    <article className='border-b border-[#efefef]'>
+      <Link
+        className='grid grid-cols-[1fr_auto] gap-[1.6rem] py-[2rem] transition-opacity hover:opacity-80 md:gap-[2.4rem] md:py-[2.4rem]'
+        onClick={(event) => {
+          if (getAccessToken()) {
+            return;
+          }
+
+          event.preventDefault();
+          onRequireAuth();
+        }}
+        to={ROUTE_PATH.POST.DETAIL(post.postId)}
+      >
+        <div className='min-w-0'>
+          <h2 className='truncate text-[2.4rem] font-semibold tracking-[-0.03em] text-[#111111] md:text-[3.2rem]'>
+            {post.title}
+          </h2>
+          <p className='mt-[0.8rem] line-clamp-2 text-[1.5rem] leading-[1.55] text-[#7a7a7a] md:text-[1.8rem]'>
+            {getExcerpt(post)}
+          </p>
+          <div className='mt-[1.6rem]'>
+            <PostAuthorMeta post={post} />
+          </div>
         </div>
-      </div>
-      <PostThumbnail post={post} />
+        <PostThumbnail post={post} />
+      </Link>
     </article>
   );
 }
@@ -130,49 +128,52 @@ function EmptyState() {
 
 export default function PostList() {
   const [page, setPage] = useState(1);
+  const [isAuthConfirmOpen, setIsAuthConfirmOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const { data } = useSuspensePostListQuery({ size: 10, page });
 
   return (
-    <div className='min-h-screen bg-[#101010] px-[1.6rem] py-[1.6rem] md:px-[2.4rem] md:py-[2.4rem]'>
-      <div className='mx-auto max-w-[120rem] overflow-hidden rounded-[2.8rem] border border-[#e6e6e6] bg-white shadow-[0_3.2rem_8rem_rgba(0,0,0,0.18)]'>
-        <Header.Root className='border-b border-[#f1f1f1] px-[1.6rem] py-[1.8rem] md:px-[3.2rem]'>
-          <Header.Left className='gap-[1.2rem]'>
-            <Header.MenuButton aria-label='Open menu' icon={<MenuIcon />} />
-            <Header.Brand className='text-[2.8rem] md:text-[3.2rem]'>GITLOG</Header.Brand>
-          </Header.Left>
-          <Header.Right className='gap-[0.8rem] md:gap-[1.2rem]'>
-            <Header.MenuButton aria-label='Search posts' icon={<SearchIcon />} />
-            <Header.ActionButton className='gap-[0.6rem] text-[#8f8f8f]'>
-              <WriteIcon />
-              <span className='hidden md:inline'>Write post</span>
-            </Header.ActionButton>
-          </Header.Right>
-        </Header.Root>
+    <>
+      <div className='px-[1.6rem] pt-[1.2rem] pb-[2.4rem] md:px-[3.2rem] md:pt-[1.6rem] md:pb-[3.2rem]'>
+        {data.posts.length > 0 ? (
+          <section>
+            {data.posts.map((post) => (
+              <PostListItem
+                key={post.postId}
+                onRequireAuth={() => {
+                  setIsAuthConfirmOpen(true);
+                }}
+                post={post}
+              />
+            ))}
+          </section>
+        ) : (
+          <EmptyState />
+        )}
 
-        <main className='px-[1.6rem] pt-[1.2rem] pb-[2.4rem] md:px-[3.2rem] md:pt-[1.6rem] md:pb-[3.2rem]'>
-          {data.posts.length > 0 ? (
-            <section>
-              {data.posts.map((post) => (
-                <PostListItem key={post.postId} post={post} />
-              ))}
-            </section>
-          ) : (
-            <EmptyState />
-          )}
-
-          <div className='mt-[2.4rem] flex justify-center md:mt-[3.2rem]'>
-            <Pagination
-              currentPage={page}
-              totalPages={Math.max(data.pageMax, 1)}
-              onPageChange={(nextPage) => {
-                startTransition(() => {
-                  setPage(nextPage);
-                });
-              }}
-            />
-          </div>
-        </main>
+        <div className='mt-[2.4rem] flex justify-center md:mt-[3.2rem]'>
+          <Pagination
+            currentPage={page}
+            totalPages={Math.max(data.pageMax, 1)}
+            onPageChange={(nextPage) => {
+              startTransition(() => {
+                setPage(nextPage);
+              });
+            }}
+          />
+        </div>
       </div>
-    </div>
+
+      <PostAccessAuthModals
+        authOpen={isAuthModalOpen}
+        confirmOpen={isAuthConfirmOpen}
+        onAuthOpenChange={setIsAuthModalOpen}
+        onConfirmOpenChange={setIsAuthConfirmOpen}
+        onProceedSignup={() => {
+          setIsAuthConfirmOpen(false);
+          setIsAuthModalOpen(true);
+        }}
+      />
+    </>
   );
 }

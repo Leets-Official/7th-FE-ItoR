@@ -1,6 +1,7 @@
 import { createBrowserRouter, redirect } from 'react-router';
 import RootErrorBoundary from '@pages/error/RootErrorBoundary.tsx';
 import PostListPage from '@pages/post/post-list/PostListPage.tsx';
+import PostDetailPage from '@pages/post/post-detail/PostDetailPage.tsx';
 import NotFoundPage from '@pages/not-found/NotFoundPage.tsx';
 import RootLayout from '@apps/layouts/RootLayout.tsx';
 import { ROUTE_PATH } from '@apps/routes/path.ts';
@@ -18,6 +19,10 @@ export const router = createBrowserRouter([
       {
         path: ROUTE_PATH.POST.LIST,
         Component: PostListPage,
+      },
+      {
+        path: ROUTE_PATH.POST.DETAIL(':postId'),
+        Component: PostDetailPage,
       },
     ],
   },
