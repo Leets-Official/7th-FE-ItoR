@@ -8,6 +8,7 @@ import { Pagination } from '@/components/common/Pagination';
 import { PageHeader, PageHeaderLegacy } from '@/components/common/PageHeader';
 import { Profile } from '@/components/common/Profile';
 import { TextField } from '@/components/common/TextField';
+import { TextFieldSet } from '@/components/common/TextFieldSet';
 import { Toast } from '@/components/common/Toast';
 import { useDisclosure } from '@/hooks';
 
@@ -174,6 +175,13 @@ export function PlaygroundPage() {
               <TextField size={14} state="disabled" placeholder="Text filed" />
             </div>
           </div>
+        </div>
+      </section>
+      <section className="flex flex-col gap-4">
+        <h1 className="text-2xl font-bold text-character-title">TextFieldSet</h1>
+        <div className="flex flex-col gap-1 bg-[#cbc5e8] p-5">
+          <TextFieldSet placeholder="Text filed" />
+          <TextFieldSet placeholder="Text filed" showHelperText helperText="* 주의 문구" />
         </div>
       </section>
     </div>
