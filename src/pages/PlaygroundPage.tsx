@@ -7,6 +7,7 @@ import { Modal } from '@/components/common/Modal';
 import { Pagination } from '@/components/common/Pagination';
 import { PageHeader, PageHeaderLegacy } from '@/components/common/PageHeader';
 import { Profile } from '@/components/common/Profile';
+import { TextField } from '@/components/common/TextField';
 import { Toast } from '@/components/common/Toast';
 import { useDisclosure } from '@/hooks';
 
@@ -150,6 +151,29 @@ export function PlaygroundPage() {
           <Profile size={2} />
           <Profile size={3} />
           <Profile size={4} />
+        </div>
+      </section>
+      <section className="flex flex-col gap-4">
+        <h1 className="text-2xl font-bold text-character-title">TextField</h1>
+        <div className="flex flex-col gap-6 bg-[#cbc5e8] p-5">
+          <div className="flex flex-col gap-2">
+            <span className="text-sm text-gray-56">32</span>
+            <div className="flex flex-col gap-3">
+              <TextField size={32} state="default" placeholder="Text filed" />
+              <TextField size={32} state="input" value="Text filed" readOnly />
+              <TextField size={32} state="click" value="Text filed" readOnly />
+              <TextField size={32} state="disabled" placeholder="Text filed" />
+            </div>
+          </div>
+          <div className="flex flex-col gap-2">
+            <span className="text-sm text-gray-56">14</span>
+            <div className="flex flex-col gap-3">
+              <TextField size={14} state="default" placeholder="Text filed" />
+              <TextField size={14} state="input" value="Text filed" readOnly />
+              <TextField size={14} state="click" value="Text filed" readOnly />
+              <TextField size={14} state="disabled" placeholder="Text filed" />
+            </div>
+          </div>
         </div>
       </section>
     </div>
