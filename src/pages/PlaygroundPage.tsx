@@ -6,6 +6,7 @@ import { Dropdown } from '@/components/common/DropdownMenu';
 import { Modal } from '@/components/common/Modal';
 import { Pagination } from '@/components/common/Pagination';
 import { PageHeader, PageHeaderLegacy } from '@/components/common/PageHeader';
+import { Profile } from '@/components/common/Profile';
 import { Toast } from '@/components/common/Toast';
 import { useDisclosure } from '@/hooks';
 
@@ -140,6 +141,15 @@ export function PlaygroundPage() {
               깃로그 시작하기
             </Button>
           </div>
+        </div>
+      </section>
+      <section className="flex flex-col gap-4">
+        <h1 className="text-2xl font-bold text-character-title">Profile</h1>
+        <div className="flex items-end gap-8 bg-[#cbc5e8] p-5">
+          <Profile size={1} />
+          <Profile size={2} />
+          <Profile size={3} />
+          <Profile size={4} />
         </div>
       </section>
     </div>
