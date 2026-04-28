@@ -6,6 +6,7 @@ import { Dropdown } from '@/components/common/DropdownMenu';
 import { Modal } from '@/components/common/Modal';
 import { Pagination } from '@/components/common/Pagination';
 import { PageHeader, PageHeaderLegacy } from '@/components/common/PageHeader';
+import { ProfileCard } from '@/components/common/ProfileCard';
 import { Profile } from '@/components/common/Profile';
 import { TextField } from '@/components/common/TextField';
 import { TextFieldSet } from '@/components/common/TextFieldSet';
@@ -152,6 +153,13 @@ export function PlaygroundPage() {
           <Profile size={2} />
           <Profile size={3} />
           <Profile size={4} />
+        </div>
+      </section>
+      <section className="flex flex-col gap-4">
+        <h1 className="text-2xl font-bold text-character-title">ProfileCard</h1>
+        <div className="flex gap-6 bg-[#cbc5e8] p-5">
+          <ProfileCard />
+          <ProfileCard variant="member" caption="%{한 줄 소개}" />
         </div>
       </section>
       <section className="flex flex-col gap-4">
