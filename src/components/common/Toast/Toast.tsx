@@ -1,7 +1,7 @@
-import clsx from 'clsx';
 import type { HTMLAttributes } from 'react';
 
 import { DoneIcon, ErrorOutlineIcon } from '@/assets/icons';
+import { cn } from '@/utils/cn';
 
 import { toastVariants } from './Toast.variants';
 
@@ -32,7 +32,7 @@ export function Toast({
 
   return (
     <div
-      className={clsx(root(), className)}
+      className={cn(root(), className)}
       role={TOAST_ROLE[variant]}
       {...props}
     >

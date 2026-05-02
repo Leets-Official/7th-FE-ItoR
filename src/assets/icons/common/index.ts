@@ -6,6 +6,7 @@ export { default as DeleteForeverIcon } from './delete_forever.svg?react';
 export { default as DoneIcon } from './done.svg?react';
 export { default as ErrorOutlineIcon } from './error_outline.svg?react';
 export { default as FolderOpenIcon } from './folder_open.svg?react';
+export { default as GitlogLogoIcon } from './gitlog_logo.svg?react';
 export { default as MoreVertIcon } from './more_vert.svg?react';
 export { default as NavigateBeforeIcon } from './navigate_before.svg?react';
 export { default as ReorderIcon } from './reorder.svg?react';

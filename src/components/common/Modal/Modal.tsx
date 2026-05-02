@@ -1,6 +1,7 @@
-import clsx from 'clsx';
 import { useEffect } from 'react';
 import type { HTMLAttributes, MouseEventHandler } from 'react';
+
+import { cn } from '@/utils/cn';
 
 import { modalStyleMap, modalStyles } from './Modal.styles';
 
@@ -59,7 +60,7 @@ export function Modal({
       onMouseDown={onClose}
     >
       <div
-        className={clsx(
+        className={cn(
           modalStyles.panel,
           hasDescription
             ? modalStyleMap.description.withDescription
@@ -81,7 +82,7 @@ export function Modal({
           <div className={modalStyles.actionGroup}>
             <button
               type="button"
-              className={clsx(
+              className={cn(
                 modalStyles.actionButton,
                 modalStyleMap.actionTone.cancel,
               )}
@@ -94,7 +95,7 @@ export function Modal({
             </button>
             <button
               type="button"
-              className={clsx(
+              className={cn(
                 modalStyles.actionButton,
                 modalStyleMap.actionTone.confirm,
               )}

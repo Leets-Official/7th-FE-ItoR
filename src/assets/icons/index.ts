@@ -7,6 +7,7 @@ export {
   DoneIcon,
   ErrorOutlineIcon,
   FolderOpenIcon,
+  GitlogLogoIcon,
   MoreVertIcon,
   NavigateBeforeIcon,
   ReorderIcon,
