@@ -1,33 +1,17 @@
-export interface LoginPayload {
-  email: string;
-  password: string;
-}
+import { apiFetch, createApiUrl, requestTokenReissue } from '@/api/http';
 
-export interface RegisterPayload {
-  email: string;
-  nickname: string;
-  password: string;
-  profilePicture: string;
-  birthDate: string;
-  name: string;
-  introduction: string;
-}
-
-export interface RegisterOauthPayload {
-  email: string;
-  nickname: string;
-  profilePicture: string;
-  birthDate: string;
-  name: string;
-  introduction: string;
-  kakaoId: number;
-}
-
-export interface ReissueTokenPayload {
+export interface ReissueData {
+  accessToken: string;
   refreshToken: string;
 }
 
-export interface LoginResponseData {
+export interface BaseResponse<T> {
+  code: number;
+  message: string;
+  data: T;
+}
+
+export interface LoginData {
   accessToken: string;
   refreshToken: string;
   nickname: string;
@@ -37,95 +21,82 @@ export interface LoginResponseData {
   responseMessage: string;
 }
 
-export interface RegisterResponseData {
+export interface RegisterRequest {
+  email: string;
+  nickname: string;
+  password?: string;
+  profilePicture: string;
+  birthDate: string;
+  name: string;
+  introduction: string;
+  kakaoId?: number;
+}
+
+export interface RegisterData {
   email: string;
   nickname: string;
   profilePicture: string;
   introduction: string;
 }
 
-export interface ReissueTokenResponseData {
-  accessToken: string;
-  refreshToken: string;
+export interface KakaoRedirectData {
+  httpStatus: string;
+  responseMessage: string;
 }
 
-interface ApiResponse<T> {
-  code: number;
-  message: string;
-  data: T;
-}
+export type ReissueResponse = BaseResponse<ReissueData>;
+export type LoginResponse = BaseResponse<LoginData>;
+export type KakaoLoginUrlResponse = BaseResponse<string>;
+export type KakaoRedirectResponse = BaseResponse<KakaoRedirectData>;
+export type RegisterResponse = BaseResponse<RegisterData>;
 
-interface ApiErrorResponse {
-  code?: number;
-  message?: string;
-}
-
-const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || 'https://blog.leets.land').replace(/\/$/, '');
-
-export function getApiBaseUrl() {
-  return API_BASE_URL;
-}
-
-export function getKakaoLoginUrl() {
-  return `${API_BASE_URL}/auth/kakao`;
-}
-
-export async function loginUser(payload: LoginPayload): Promise<ApiResponse<LoginResponseData>> {
-  return postJson<LoginPayload, LoginResponseData>('/auth/login', payload, '로그인');
-}
-
-export async function registerUser(payload: RegisterPayload): Promise<ApiResponse<RegisterResponseData>> {
-  return postJson<RegisterPayload, RegisterResponseData>('/auth/register', payload, '일반 회원가입');
-}
-
-export async function registerOauthUser(payload: RegisterOauthPayload): Promise<ApiResponse<RegisterResponseData>> {
-  return postJson<RegisterOauthPayload, RegisterResponseData>('/auth/register-oauth', payload, 'OAuth 회원가입');
-}
-
-export async function reissueToken(payload: ReissueTokenPayload): Promise<ApiResponse<ReissueTokenResponseData>> {
-  return postJson<ReissueTokenPayload, ReissueTokenResponseData>('/auth/reissue', payload, '토큰 재발급');
-}
-
-async function postJson<TPayload, TData>(
-  path: string,
-  payload: TPayload,
-  actionLabel: string,
-): Promise<ApiResponse<TData>> {
-  const response = await fetch(`${API_BASE_URL}${path}`, {
-    method: 'POST',
-    headers: {
-      Accept: '*/*',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(payload),
-  });
-
-  const responseText = await response.text();
-  const parsedBody = parseJson<ApiErrorResponse | ApiResponse<TData>>(responseText);
-
-  if (!response.ok) {
-    const message =
-      parsedBody && 'message' in parsedBody && parsedBody.message
-        ? parsedBody.message
-        : `${actionLabel} 요청에 실패했습니다. (HTTP ${response.status})`;
-    throw new Error(message);
-  }
-
-  if (!parsedBody || !('data' in parsedBody)) {
-    throw new Error(`${actionLabel} 응답 형식이 예상과 다릅니다.`);
-  }
-
-  return parsedBody;
-}
-
-function parseJson<T>(value: string): T | null {
-  if (!value) {
-    return null;
-  }
-
+export const reissueToken = async (): Promise<ReissueResponse> => {
   try {
-    return JSON.parse(value) as T;
-  } catch {
-    return null;
+    return await requestTokenReissue();
+  } catch (error) {
+    console.error('토큰 재발급 실패:', error);
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    window.location.href = '/login';
+
+    return {
+      code: 401,
+      message: '세션이 만료되었습니다. 다시 로그인해주세요.',
+      data: { accessToken: '', refreshToken: '' },
+    };
   }
-}
+};
+
+export const loginWithEmail = async (
+  email: string,
+  password: string,
+): Promise<LoginResponse> => {
+  return apiFetch<LoginResponse>('/auth/login', {
+    method: 'POST',
+    body: { email, password },
+  });
+};
+
+export const getKakaoLoginUrl = (): string => {
+  return createApiUrl('/auth/kakao');
+};
+
+export const loginWithKakao = async (code: string): Promise<KakaoRedirectResponse> => {
+  return apiFetch<KakaoRedirectResponse>('/auth/kakao/redirect', {
+    params: { code },
+  });
+};
+
+export const registerUser = async (data: RegisterRequest): Promise<RegisterResponse> => {
+  return apiFetch<RegisterResponse>('/auth/register', {
+    method: 'POST',
+    body: data,
+  });
+};
+
+export const registerOAuthUser = async (data: RegisterRequest): Promise<RegisterResponse> => {
+  return apiFetch<RegisterResponse>('/auth/register-oauth', {
+    method: 'POST',
+    body: data,
+  });
+};
