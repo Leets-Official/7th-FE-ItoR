@@ -1,0 +1,1 @@
+export { MyPageJoinPage } from './MyPageJoinPage';
