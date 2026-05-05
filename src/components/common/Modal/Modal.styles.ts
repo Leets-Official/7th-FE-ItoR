@@ -1,5 +1,5 @@
 export const modalStyles = {
-  overlay: 'fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4',
+  overlay: 'fixed inset-0 z-50 flex items-center justify-center bg-[#B6B6B6]/30 p-4 backdrop-blur-[4px]',
   panel: 'w-[326px] max-w-[326px] rounded-md bg-white px-4 pt-6 pb-4 shadow-modal',
   content: 'flex flex-col gap-6',
   textGroup: 'flex flex-col gap-2',
@@ -16,6 +16,7 @@ export const modalStyleMap = {
   actionTone: {
     cancel: 'border-gray-96 bg-white text-black',
     confirm: 'border-warning bg-warning text-white',
+    primary: 'border-primary bg-primary text-white',
   },
   description: {
     withDescription: 'h-[192px]',
