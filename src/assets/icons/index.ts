@@ -10,6 +10,10 @@ export {
   GitlogLogoIcon,
   MoreVertIcon,
   NavigateBeforeIcon,
+  Profile1Icon,
+  Profile2Icon,
+  Profile3Icon,
+  Profile4Icon,
   ReorderIcon,
   SettingsIcon,
 } from './common';
