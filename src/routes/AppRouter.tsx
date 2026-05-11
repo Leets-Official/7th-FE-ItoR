@@ -22,6 +22,7 @@ export function AppRouter() {
       <Route path="/auth/kakao/redirect" element={<KakaoCallbackPage />} />
       <Route path="/blog-search" element={<Navigate to="/login" replace />} />
       <Route path="/mypage" element={<Navigate to="/signup/email" replace />} />
+      <Route path="/" element={<Navigate to="/blog-search" replace />} />
       <Route path="/playground" element={<PlaygroundPage />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
