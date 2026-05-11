@@ -6,6 +6,22 @@ import svgr from 'vite-plugin-svgr';
 
 export default defineConfig({
   plugins: [react(), tailwindcss(), svgr()],
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://blog.leets.land',
+        changeOrigin: true,
+        secure: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+        configure: (proxy) => {
+          proxy.on('proxyReq', (proxyReq) => {
+            proxyReq.setHeader('origin', 'https://blog.leets.land');
+            proxyReq.setHeader('referer', 'https://blog.leets.land/');
+          });
+        },
+      },
+    },
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
