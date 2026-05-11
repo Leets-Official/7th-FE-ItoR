@@ -1,5 +1,4 @@
 import { ChatIcon, CreateIcon, MoreVertIcon } from '@/assets/icons/common';
-<<<<<<< HEAD
 import type { PageHeaderActionProps } from './types';
 
 // 메인 타입 렌더링
@@ -8,14 +7,6 @@ export const renderMainType = ({ onWriteClick }: PageHeaderActionProps) => (
     type="button"
     className="flex h-10 w-[120px] items-center gap-1 rounded-[25px] px-3 py-2 text-sm font-normal leading-[160%] tracking-[-0.07px] text-gray-56 hover:bg-gray-96"
     onClick={onWriteClick}
-=======
-
-// 메인 타입 렌더링
-export const renderMainType = () => (
-  <button
-    type="button"
-    className="flex h-10 w-[120px] items-center gap-1 rounded-[25px] px-3 py-2 text-sm font-normal leading-[160%] tracking-[-0.07px] text-gray-56 hover:bg-gray-96"
->>>>>>> upstream/최예빈/main
   >
     <span className="flex h-6 w-6 items-center justify-center">
       <CreateIcon className="h-[18px] w-[18px] text-gray-56 [&_*]:fill-current [&_*]:stroke-current" />
@@ -25,7 +16,6 @@ export const renderMainType = () => (
 );
 
 // 상세 타입 렌더링
-<<<<<<< HEAD
 export const renderDetailType = ({
   onCommentClick,
   canManagePost = false,
@@ -35,15 +25,10 @@ export const renderDetailType = ({
   onDeletePost,
 }: PageHeaderActionProps) => (
   <div className="relative flex h-10 items-center justify-end gap-2">
-=======
-export const renderDetailType = () => (
-  <div className="flex h-10 w-[88px] items-center justify-end gap-2">
->>>>>>> upstream/최예빈/main
     <button
       type="button"
       className="flex h-10 w-10 items-center justify-center rounded-md text-gray-20 hover:bg-gray-96"
       aria-label="댓글"
-<<<<<<< HEAD
       onClick={onCommentClick}
     >
       <ChatIcon className="h-5 w-5" />
@@ -90,45 +75,23 @@ export const renderDetailType = () => (
         ) : null}
       </>
     ) : null}
-=======
-    >
-      <ChatIcon className="h-5 w-5" />
-    </button>
-    <button
-      type="button"
-      className="flex h-10 w-10 items-center justify-center rounded-md text-gray-20 hover:bg-gray-96"
-      aria-label="더보기"
-    >
-      <MoreVertIcon className="h-4 w-1" />
-    </button>
->>>>>>> upstream/최예빈/main
   </div>
 );
 
 // 작성 타입 렌더링
-<<<<<<< HEAD
 export const renderWriteType = ({ onDeletePost, onSubmitPost }: PageHeaderActionProps) => (
-=======
-export const renderWriteType = () => (
->>>>>>> upstream/최예빈/main
   <div className="flex h-[38px] items-center gap-[10px]">
     <button
       type="button"
       className="flex h-[38px] w-[76px] items-center justify-center text-sm font-normal leading-[160%] tracking-[-0.07px] text-warning"
-<<<<<<< HEAD
       onClick={onDeletePost}
-=======
->>>>>>> upstream/최예빈/main
     >
       삭제하기
     </button>
     <button
       type="button"
       className="flex h-[38px] w-[76px] items-center justify-center text-sm font-normal leading-[160%] tracking-[-0.07px] text-black"
-<<<<<<< HEAD
       onClick={onSubmitPost}
-=======
->>>>>>> upstream/최예빈/main
     >
       게시하기
     </button>

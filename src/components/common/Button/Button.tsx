@@ -13,10 +13,7 @@ export function Button({
   pressed = false,
   showIcon = true,
   icon = <CreateIcon aria-hidden="true" />,
-<<<<<<< HEAD
   textClassName,
-=======
->>>>>>> upstream/최예빈/main
   disabled = false,
   ...props
 }: ButtonProps) {
@@ -44,11 +41,7 @@ export function Button({
           {icon}
         </span>
       )}
-<<<<<<< HEAD
       {children ? <span className={cn(buttonTextVariants({ size }), textClassName)}>{children}</span> : null}
-=======
-      {children ? <span className={buttonTextVariants({ size })}>{children}</span> : null}
->>>>>>> upstream/최예빈/main
     </button>
   );
 }

@@ -1,8 +1,5 @@
 import { Profile } from '@/components/common/Profile';
-<<<<<<< HEAD
 import { PictureFrame } from '@/components/common/PictureFrame';
-=======
->>>>>>> upstream/최예빈/main
 
 import type { PostListItemProps } from './PostListItem.types';
 
@@ -12,10 +9,7 @@ export function PostListItem({
   nickname,
   date,
   commentCount,
-<<<<<<< HEAD
   onClick,
-=======
->>>>>>> upstream/최예빈/main
   showThumbnail = true,
   thumbnailSrc,
   descriptionLines = 2,
@@ -24,7 +18,6 @@ export function PostListItem({
   const contentWidthClass = showThumbnail ? 'w-[548px]' : 'w-[656px]';
 
   return (
-<<<<<<< HEAD
     <article
       className={`flex h-[166px] w-[688px] items-start gap-4 bg-white px-4 py-3 ${onClick ? 'cursor-pointer' : ''}`}
       onClick={onClick}
@@ -41,9 +34,6 @@ export function PostListItem({
           : undefined
       }
     >
-=======
-    <article className="flex h-[166px] w-[688px] items-start gap-4 bg-white px-4 py-3">
->>>>>>> upstream/최예빈/main
       <div className={`flex h-[150px] ${contentWidthClass} flex-col`}>
         <div className="flex h-[106px] flex-col gap-2">
           <h3 className="text-base font-medium leading-[160%] tracking-[-0.08px] text-black">{title}</h3>
@@ -76,21 +66,13 @@ export function PostListItem({
       </div>
 
       {showThumbnail && (
-<<<<<<< HEAD
         <PictureFrame size="small">
-=======
-        <div className="h-[116px] w-[124px] px-4 py-3">
->>>>>>> upstream/최예빈/main
           {thumbnailSrc ? (
             <img src={thumbnailSrc} alt="게시물 썸네일" className="h-[92px] w-[92px] object-cover" />
           ) : (
             <div className="h-[92px] w-[92px] bg-gray-90" aria-hidden="true" />
           )}
-<<<<<<< HEAD
         </PictureFrame>
-=======
-        </div>
->>>>>>> upstream/최예빈/main
       )}
     </article>
   );

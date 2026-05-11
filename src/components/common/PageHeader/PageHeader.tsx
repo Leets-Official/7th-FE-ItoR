@@ -1,6 +1,5 @@
 import PageHeaderLeft from '@/components/common/PageHeader/PageHeaderLeft';
 import PageHeaderRight from '@/components/common/PageHeader/PageHeaderRight';
-<<<<<<< HEAD
 import { ProfileCard } from '@/components/common/ProfileCard';
 import { cn } from '@/utils/cn';
 import { clearAuthTokens, getAccessToken } from '@/utils/tokenStorage';
@@ -9,17 +8,10 @@ import { useNavigate } from 'react-router-dom';
 import type { PageHeaderActionProps, PageHeaderType } from './types';
 
 interface PageHeaderProps extends PageHeaderActionProps {
-=======
-import { cn } from '@/utils/cn';
-import type { PageHeaderType } from './types';
-
-interface PageHeaderProps {
->>>>>>> upstream/최예빈/main
   className?: string;
   type: PageHeaderType;
 }
 
-<<<<<<< HEAD
 function PageHeader({
   className = '',
   type,
@@ -108,14 +100,6 @@ function PageHeader({
         </div>
       ) : null}
     </div>
-=======
-function PageHeader({ className = '', type }: PageHeaderProps) {
-  return (
-    <header className={cn('flex h-[74px] w-full items-center justify-between bg-white px-4 py-3', className)}>
-      <PageHeaderLeft />
-      <PageHeaderRight type={type} />
-    </header>
->>>>>>> upstream/최예빈/main
   );
 }
 
