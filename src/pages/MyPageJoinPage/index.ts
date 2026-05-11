@@ -1,1 +1,1 @@
-export { MyPageJoinPage } from './MyPageJoinPage';
+export { EmailSignupPage } from './MyPageJoinPage';

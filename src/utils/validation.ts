@@ -1,12 +1,17 @@
 import { REQUIRED_MESSAGE, type JoinFormErrors, type JoinFormValues } from '@/pages/MyPageJoinPage/types';
 
+const USED_EMAILS = ['admin@gitlog.com', 'test@example.com', 'user@domain.com'];
+
 export function validateJoinForm(formValues: JoinFormValues): JoinFormErrors {
   const nextErrors: JoinFormErrors = {};
+  const email = formValues.email.trim().toLowerCase();
 
-  if (!formValues.email.trim()) {
+  if (!email) {
     nextErrors.email = REQUIRED_MESSAGE;
-  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formValues.email.trim())) {
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     nextErrors.email = '* 올바른 이메일 형식이 아닙니다.';
+  } else if (USED_EMAILS.includes(email)) {
+    nextErrors.email = '* 사용중인 이메일입니다.';
   }
 
   if (!formValues.password.trim()) {
@@ -23,16 +28,26 @@ export function validateJoinForm(formValues: JoinFormValues): JoinFormErrors {
 
   if (!formValues.name.trim()) {
     nextErrors.name = REQUIRED_MESSAGE;
+  } else if (formValues.name.trim().length > 10) {
+    nextErrors.name = '* 이름은 최대 10글자 입니다.';
   }
 
   if (!formValues.birthDate.trim()) {
     nextErrors.birthDate = REQUIRED_MESSAGE;
+  } else if (!/^\d{4}-\d{2}-\d{2}$/.test(formValues.birthDate.trim())) {
+    nextErrors.birthDate = '* YYYY-MM-DD 형식으로 입력해주세요.';
   } else {
-    const birthDate = new Date(formValues.birthDate);
+    const [year, month, day] = formValues.birthDate.trim().split('-').map(Number);
+    const birthDate = new Date(year, month - 1, day);
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    if (Number.isNaN(birthDate.getTime())) {
+    if (
+      Number.isNaN(birthDate.getTime()) ||
+      birthDate.getFullYear() !== year ||
+      birthDate.getMonth() !== month - 1 ||
+      birthDate.getDate() !== day
+    ) {
       nextErrors.birthDate = '* 올바른 날짜 형식이 아닙니다.';
     } else if (birthDate > today) {
       nextErrors.birthDate = '* 오늘 이전의 날짜만 가능합니다.';
