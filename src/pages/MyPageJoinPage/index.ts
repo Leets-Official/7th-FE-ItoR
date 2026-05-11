@@ -1,0 +1,1 @@
+export { EmailSignupPage } from './MyPageJoinPage';

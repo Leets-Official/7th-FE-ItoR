@@ -14,12 +14,12 @@ interface PaginationButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> 
 }
 
 const paginationButtonBaseClass =
-  'flex h-8 w-8 items-center justify-center rounded-sm border text-sm font-regular leading-[22px] tracking-[-0.07px]';
+  'flex h-8 w-8 items-center justify-center rounded-[2px] border text-sm font-regular leading-[22px] tracking-[-0.07px]';
 
 const paginationButtonStateClassMap: Record<PaginationButtonState, string> = {
-  normal: 'border-gray-90 bg-white text-character-title',
+  normal: 'border-[#D9D9D9] bg-white text-[rgba(0,0,0,0.85)]',
   active: 'border-primary bg-white text-primary',
-  disabled: 'cursor-not-allowed border-gray-90 bg-gray-96 text-character-disabled',
+  disabled: 'cursor-not-allowed border-[#D9D9D9] bg-white text-[#D9D9D9]',
 };
 
 export function PaginationButton({
