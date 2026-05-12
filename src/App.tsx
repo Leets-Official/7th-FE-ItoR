@@ -1,38 +1,28 @@
-import { useEffect } from 'react';
-import { RouterProvider } from 'react-router-dom';
-import { router } from '@/router/Router';
-import { useAuthStore } from '@/store/useAuthStore';
-
-function DevAuthPanel() {
-  const { isLoggedIn, user, mockLogin, logout } = useAuthStore();
-
-  if (!import.meta.env.DEV) return null;
-
-  return (
-    <div className="fixed right-4 bottom-4 z-9999 flex gap-2 rounded-md bg-black px-3 py-2 text-white">
-      <span>{isLoggedIn ? user?.nickname : 'guest'}</span>
-      <button onClick={mockLogin}>mock login</button>
-      <button onClick={logout}>logout</button>
-    </div>
-  );
-}
+import { Routes, Route, Navigate } from "react-router-dom";
+import MainPage from "@/pages/MainPage/MainPage";
+import SignupPage from "@/pages/SignupPage/SignupPage";
+import PostDetailPage from "@/pages/PostDetailPage";
+import PostWritePage from "@/pages/PostWritePage/PostWritePage";
+import MyPage from "@/pages/MyPage/MyPage";
+import MyPageSetting from "@/pages/MyPageSetting/MyPageSetting";
+import OAuthCallback from "@/pages/OAuthCallback";
+import { ToastProvider } from "@/contexts/ToastContext";
 
 function App() {
-  const logout = useAuthStore((state) => state.logout);
-
-  useEffect(() => {
-    window.addEventListener('auth:expired', logout);
-
-    return () => {
-      window.removeEventListener('auth:expired', logout);
-    };
-  }, [logout]);
-
   return (
-    <>
-      <RouterProvider router={router} />
-      <DevAuthPanel />
-    </>
+    <ToastProvider>
+      <Routes>
+        <Route path="/" element={<Navigate to="/blog" replace />} />
+        <Route path="/blog" element={<MainPage />} />
+        <Route path="/signup" element={<SignupPage />} />
+        <Route path="/blog/:postId" element={<PostDetailPage />} />
+        <Route path="/write" element={<PostWritePage />} />
+        <Route path="/edit/:postId" element={<PostWritePage />} />
+        <Route path="/mypage" element={<MyPage />} />
+        <Route path="/mypage/setting" element={<MyPageSetting />} />
+        <Route path="/oauth/kakao/success" element={<OAuthCallback />} />
+      </Routes>
+    </ToastProvider>
   );
 }
 

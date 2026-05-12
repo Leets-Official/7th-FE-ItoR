@@ -1,41 +1,32 @@
-import { create } from 'zustand';
-import type { UserData } from '@/api/user';
+import { create } from "zustand";
 
 interface AuthState {
-  user: UserData | null;
-  isLoggedIn: boolean;
-  setUser: (user: UserData | null) => void;
-  logout: () => void;
-  mockLogin: () => void;
+  accessToken: string | null;
+  refreshToken: string | null;
+  setAccessToken: (token: string | null) => void;
+  setRefreshToken: (token: string | null) => void;
+  clearTokens: () => void;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
-  user: null,
-  isLoggedIn: false,
-  setUser: (user) => set({ user, isLoggedIn: true }),
+  accessToken: localStorage.getItem("accessToken"),
+  refreshToken: localStorage.getItem("refreshToken"),
 
-  logout: () => {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    set({ user: null, isLoggedIn: false });
+  setAccessToken: (token) => {
+    if (token) localStorage.setItem("accessToken", token);
+    else localStorage.removeItem("accessToken");
+    set({ accessToken: token });
   },
 
-  mockLogin: () => {
-    // Keep mock auth UI-only so refresh/reissue APIs are never called with fake JWT strings.
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
+  setRefreshToken: (token) => {
+    if (token) localStorage.setItem("refreshToken", token);
+    else localStorage.removeItem("refreshToken");
+    set({ refreshToken: token });
+  },
 
-    set({
-      user: {
-        id: 1,
-        email: 'user@example.com',
-        nickname: '테스트유저',
-        profilePicture: '',
-        name: '테스트',
-        birthDate: '2000-01-01',
-        introduction: 'UI 개발용 계정입니다.',
-      },
-      isLoggedIn: true,
-    });
+  clearTokens: () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    set({ accessToken: null, refreshToken: null });
   },
 }));
