@@ -34,7 +34,10 @@ export function useAuth() {
       setUser(user);
       return true;
     } catch (error) {
-      throw error;
+      if (error instanceof Error && error.message.includes("가입되지 않")) {
+        throw error;
+      }
+      return false;
     } finally {
       setLoading(false);
     }

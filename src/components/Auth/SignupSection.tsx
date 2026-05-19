@@ -1,5 +1,6 @@
 import { KakaoIcon } from "@/assets/icons";
 import * as styles from "./Signup.styled";
+import { API_BASE_URL } from "@/api/config";
 
 interface SignupSectionProps {
   onSelect: (type: "email") => void;
@@ -9,7 +10,7 @@ const SignupSection: React.FC<SignupSectionProps> = ({ onSelect }) => {
   const handleEmailSignup = () => onSelect("email");
 
   const handleKakaoSignup = () => {
-    window.location.href = `${import.meta.env.VITE_API_BASE_URL}/auth/kakao`;
+    window.location.href = `${API_BASE_URL}/auth/kakao`;
   };
 
   return (

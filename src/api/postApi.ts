@@ -27,12 +27,16 @@ export const createPost = async (payload: Pick<Post, "title" | "contents">) => {
 };
 
 export const updatePost = async (postId: string, payload: Pick<Post, "title" | "contents">) => {
-  const res = await api.put(`/posts/${postId}`, payload);
+  const res = await api.patch("/posts", payload, {
+    params: { postId },
+  });
   return res.data;
 };
 
 export const deletePost = async (postId: string) => {
-  const res = await api.delete(`/posts/${postId}`);
+  const res = await api.delete("/posts", {
+    params: { postId },
+  });
   return res.data;
 };
 

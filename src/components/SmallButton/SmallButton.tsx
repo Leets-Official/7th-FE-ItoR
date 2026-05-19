@@ -6,6 +6,7 @@ import { cn } from "@/utils/cn";
 export const SmallButton: React.FC<SmallButtonProps> = ({
   label,
   variant = "secondaryOutline",
+  type = "button",
   leftIcon,
   className = "",
   disabled,
@@ -21,7 +22,7 @@ export const SmallButton: React.FC<SmallButtonProps> = ({
   );
 
   return (
-    <button className={cls} disabled={disabled} {...props}>
+    <button type={type} className={cls} disabled={disabled} {...props}>
       {leftIcon ?? <CreateIcon className="h-3 w-3 shrink-0" />}
       <span>{label}</span>
     </button>

@@ -1,9 +1,22 @@
 import axios from "axios";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useUserStore } from "@/store/useUserStore";
+import { API_BASE_URL } from "./config";
+
+const AUTH_EXCLUDED_PATHS = [
+  "/auth/login",
+  "/auth/register",
+  "/auth/register-oauth",
+  "/auth/reissue",
+  "/auth/kakao",
+  "/auth/kakao/redirect",
+];
+
+const isAuthExcludedRequest = (url?: string) =>
+  !!url && AUTH_EXCLUDED_PATHS.some((path) => url === path || url.startsWith(`${path}?`));
 
 export const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+  baseURL: API_BASE_URL,
   withCredentials: true,
 });
 
@@ -21,6 +34,10 @@ export const clearAuthSession = () => {
 
 api.interceptors.request.use(
   (config) => {
+    if (isAuthExcludedRequest(config.url)) {
+      return config;
+    }
+
     const token = useAuthStore.getState().accessToken ?? localStorage.getItem("accessToken");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -34,15 +51,21 @@ api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
+    const requestUrl = originalRequest?.url;
     const refreshToken =
       useAuthStore.getState().refreshToken ?? localStorage.getItem("refreshToken");
 
-    if (error.response?.status === 401 && refreshToken && !originalRequest._retry) {
+    if (
+      error.response?.status === 401 &&
+      refreshToken &&
+      !originalRequest._retry &&
+      !isAuthExcludedRequest(requestUrl)
+    ) {
       originalRequest._retry = true;
 
       try {
         const res = await axios.post(
-          `${import.meta.env.VITE_API_BASE_URL}/auth/reissue`,
+          `${API_BASE_URL}/auth/reissue`,
           { refreshToken },
           { withCredentials: true },
         );

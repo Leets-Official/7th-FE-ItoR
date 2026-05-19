@@ -1,6 +1,10 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import TextField from "@/components/Text/TextField";
 import { KakaoIcon, ClearIcon } from "@/assets/icons";
+import { useScrollLock } from "@/hooks/useScrollLock";
+import { useAuth } from "@/hooks/useAuth";
+import { API_BASE_URL } from "@/api/config";
 import {
   backdrop,
   wrapper,
@@ -16,9 +20,6 @@ import {
   closeButton,
   errorText,
 } from "./LoginModal.styled";
-import { useNavigate } from "react-router-dom";
-import { useScrollLock } from "@/hooks/useScrollLock";
-import { useAuth } from "@/hooks/useAuth";
 
 interface LoginModalProps {
   open: boolean;
@@ -59,9 +60,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ open, onClose, onSignupPrompt }
         setPasswordError("이메일 또는 비밀번호가 올바르지 않습니다.");
       }
     } catch (error: unknown) {
-      const err = error as { response?: { code?: number }; message?: string };
-
-      if (err.response?.code === 401 || err.message?.includes("가입되지 않은")) {
+      if (error instanceof Error && error.message.includes("가입되지 않")) {
         onClose();
         onSignupPrompt?.();
       } else {
@@ -71,8 +70,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ open, onClose, onSignupPrompt }
   };
 
   const handleKakaoLogin = () => {
-    const kakaoAuthUrl = `${import.meta.env.VITE_API_BASE_URL}/auth/kakao`;
-    window.location.href = kakaoAuthUrl;
+    window.location.href = `${API_BASE_URL}/auth/kakao`;
   };
 
   const handleSignupClick = () => {
@@ -112,7 +110,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ open, onClose, onSignupPrompt }
           </div>
 
           <button className={loginButton} onClick={handleLoginClick} disabled={loading}>
-            {loading ? "로그인 중..." : "이메일로 로그인"}
+            {loading ? "로그인 중.." : "이메일로 로그인"}
           </button>
 
           <div className={snsDivider}>

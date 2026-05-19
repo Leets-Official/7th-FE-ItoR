@@ -7,6 +7,7 @@ export const Button: React.FC<ButtonProps> = ({
   label,
   variant = "primaryOutline",
   size = "md",
+  type = "button",
   leftIcon,
   className = "",
   disabled,
@@ -25,7 +26,7 @@ export const Button: React.FC<ButtonProps> = ({
   const iconCls = cn("h-6 w-6 shrink-0", iconColors[variant], disabled && "text-gray-400");
 
   return (
-    <button className={cls} disabled={disabled} {...props}>
+    <button type={type} className={cls} disabled={disabled} {...props}>
       {leftIcon &&
         React.cloneElement(leftIcon, {
           className: cn(leftIcon.props.className, iconCls),

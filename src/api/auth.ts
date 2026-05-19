@@ -53,9 +53,32 @@ interface TokenResponse {
   refreshToken: string;
 }
 
+type RegisterPayload = {
+  email: string;
+  nickname: string;
+  birthDate: string;
+  name: string;
+  profilePicture?: string;
+  introduction?: string;
+};
+
+const getApiErrorMessage = (err: unknown, fallback: string) => {
+  const error = err as AxiosError<ApiErrorResponse>;
+  return error.response?.data?.message ?? fallback;
+};
+
 const saveTokens = (accessToken: string, refreshToken: string) => {
   syncAuthTokens(accessToken, refreshToken);
 };
+
+const buildRegisterPayload = (userData: RegisterPayload) => ({
+  email: userData.email.trim(),
+  nickname: userData.nickname.trim(),
+  birthDate: userData.birthDate.trim(),
+  name: userData.name.trim(),
+  ...(userData.introduction?.trim() ? { introduction: userData.introduction.trim() } : {}),
+  ...(userData.profilePicture?.trim() ? { profilePicture: userData.profilePicture.trim() } : {}),
+});
 
 export const login = async (email: string, password: string): Promise<User> => {
   try {
@@ -72,8 +95,7 @@ export const login = async (email: string, password: string): Promise<User> => {
       loginType: user.loginType ?? "email",
     };
   } catch (err) {
-    const error = err as AxiosError<ApiErrorResponse>;
-    throw new Error(error.response?.data?.message ?? "로그인 요청 중 오류가 발생했습니다.");
+    throw new Error(getApiErrorMessage(err, "로그인 요청 중 오류가 발생했습니다."));
   }
 };
 
@@ -110,8 +132,7 @@ export const handleKakaoCallback = async (
       loginType: u.loginType ?? "kakao",
     };
   } catch (err) {
-    const error = err as AxiosError<ApiErrorResponse>;
-    throw new Error(error.response?.data?.message ?? "카카오 로그인 처리 중 오류가 발생했습니다.");
+    throw new Error(getApiErrorMessage(err, "카카오 로그인 처리 중 오류가 발생했습니다."));
   }
 };
 
@@ -124,8 +145,17 @@ export const register = async (userData: {
   name: string;
   introduction?: string;
 }) => {
-  const res = await api.post<ApiResponse<null>>("/auth/register", userData);
-  return res.data;
+  const payload = {
+    ...buildRegisterPayload(userData),
+    password: userData.password,
+  };
+
+  try {
+    const res = await api.post<ApiResponse<null>>("/auth/register", payload);
+    return res.data;
+  } catch (err) {
+    throw new Error(getApiErrorMessage(err, "회원가입 중 오류가 발생했습니다."));
+  }
 };
 
 export const registerKakao = async (userData: {
@@ -137,8 +167,17 @@ export const registerKakao = async (userData: {
   introduction?: string;
   kakaoId: number;
 }) => {
-  const res = await api.post<ApiResponse<null>>("/auth/register-oauth", userData);
-  return res.data;
+  const payload = {
+    ...buildRegisterPayload(userData),
+    kakaoId: userData.kakaoId,
+  };
+
+  try {
+    const res = await api.post<ApiResponse<null>>("/auth/register-oauth", payload);
+    return res.data;
+  } catch (err) {
+    throw new Error(getApiErrorMessage(err, "카카오 회원가입 중 오류가 발생했습니다."));
+  }
 };
 
 export const reissueToken = async () => {
