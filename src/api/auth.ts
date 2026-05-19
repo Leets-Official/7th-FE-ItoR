@@ -1,5 +1,5 @@
 import { http } from '@/api/http';
-import type { JoinFormValues } from '@/pages/MyPageJoinPage/types';
+import type { JoinFormValues } from '@/pages/MyPageEditPage/types';
 
 interface ApiResponse<T> {
   code: number;

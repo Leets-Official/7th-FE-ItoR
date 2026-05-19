@@ -1,9 +1,11 @@
 import { useMemo, useState } from 'react';
 
-import { initialFormValues, type JoinFormErrors, type JoinFormValues } from '@/pages/MyPageJoinPage/types';
+import { initialFormValues, type JoinFormErrors, type JoinFormValues } from '@/pages/MyPageEditPage/types';
 import { validateJoinForm } from '@/utils/validation';
 
-export function useJoinForm() {
+type ValidateFn = (values: JoinFormValues) => JoinFormErrors;
+
+export function useJoinForm(validateFn: ValidateFn = validateJoinForm) {
   const [values, setValues] = useState<JoinFormValues>(initialFormValues);
   const [errors, setErrors] = useState<JoinFormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -16,7 +18,7 @@ export function useJoinForm() {
   };
 
   const validate = () => {
-    const nextErrors = validateJoinForm(values);
+    const nextErrors = validateFn(values);
 
     if (Object.keys(nextErrors).length > 0) {
       setErrors(nextErrors);
@@ -33,6 +35,8 @@ export function useJoinForm() {
     isSubmitting,
     canSubmit,
     setIsSubmitting,
+    setValues,
+    setErrors,
     handleChange,
     validate,
   };

@@ -5,9 +5,11 @@ export function useProfileImage() {
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [profileImageError, setProfileImageError] = useState('');
 
+  const isBlobUrl = (url: string) => url.startsWith('blob:');
+
   useEffect(
     () => () => {
-      if (profileImage) {
+      if (profileImage && isBlobUrl(profileImage)) {
         URL.revokeObjectURL(profileImage);
       }
     },
@@ -29,7 +31,7 @@ export function useProfileImage() {
       return;
     }
 
-    if (profileImage) {
+    if (profileImage && isBlobUrl(profileImage)) {
       URL.revokeObjectURL(profileImage);
     }
 
@@ -42,7 +44,9 @@ export function useProfileImage() {
   return {
     fileInputRef,
     profileImage,
+    setProfileImage,
     profileImageError,
+    setProfileImageError,
     openFileDialog,
     handleProfileFileChange,
   };
