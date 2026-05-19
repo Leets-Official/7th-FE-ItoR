@@ -3,7 +3,8 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { LoginPage } from '@/pages/BlogSearchPage';
 import { BlogDetailPage } from '@/pages/BlogDetailPage';
 import { KakaoCallbackPage } from '@/pages/KakaoCallbackPage';
-import { EmailSignupPage } from '@/pages/MyPageJoinPage';
+import { MyPageEditPage } from '@/pages/MyPageEditPage';
+import { MyPageHomePage } from '@/pages/MyPageHomePage';
 import { PlaygroundPage } from '@/pages/PlaygroundPage';
 import { BlogWritePage } from '@/pages/BlogWritePage';
 
@@ -16,12 +17,12 @@ export function AppRouter() {
       <Route path="/blog/:id" element={<BlogDetailPage />} />
       <Route path="/blog/write" element={<BlogWritePage />} />
       <Route path="/blog/:id/edit" element={<BlogWritePage />} />
-      <Route path="/signup/email" element={<EmailSignupPage />} />
+      <Route path="/signup/email" element={<MyPageEditPage />} />
       <Route path="/oauth/kakao/callback" element={<KakaoCallbackPage />} />
       <Route path="/oauth/kakao/success" element={<KakaoCallbackPage />} />
       <Route path="/auth/kakao/redirect" element={<KakaoCallbackPage />} />
       <Route path="/blog-search" element={<Navigate to="/login" replace />} />
-      <Route path="/mypage" element={<Navigate to="/signup/email" replace />} />
+      <Route path="/mypage" element={<MyPageHomePage />} />
       <Route path="/" element={<Navigate to="/blog-search" replace />} />
       <Route path="/playground" element={<PlaygroundPage />} />
       <Route path="*" element={<Navigate to="/" replace />} />
