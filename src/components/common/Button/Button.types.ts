@@ -8,10 +8,7 @@ export interface ButtonProps
   children?: ReactNode;
   showIcon?: boolean;
   icon?: ReactNode;
-<<<<<<< HEAD
   textClassName?: string;
-=======
->>>>>>> upstream/최예빈/main
   pressed?: boolean;
   disabled?: boolean;
 }

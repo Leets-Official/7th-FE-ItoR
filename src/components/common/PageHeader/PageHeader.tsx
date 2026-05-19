@@ -16,7 +16,12 @@ function PageHeader({
   className = '',
   type,
   onCommentClick,
+  onCancelClick,
   onSubmitPost,
+  cancelLabel,
+  submitLabel,
+  isSubmitDisabled,
+  authStateOverride,
   canManagePost,
   isPostMenuOpen,
   onTogglePostMenu,
@@ -27,7 +32,12 @@ function PageHeader({
   const profileCardRef = useRef<HTMLDivElement | null>(null);
   const [isProfileCardOpen, setIsProfileCardOpen] = useState(false);
 
-  const isLoggedIn = useMemo(() => Boolean(getAccessToken()), []);
+  const isLoggedIn = useMemo(() => {
+    if (authStateOverride) {
+      return authStateOverride === 'member';
+    }
+    return Boolean(getAccessToken());
+  }, [authStateOverride]);
 
   useEffect(() => {
     if (!isProfileCardOpen) {
@@ -79,7 +89,11 @@ function PageHeader({
           type={type}
           onCommentClick={onCommentClick}
           onWriteClick={handleGoWrite}
+          onCancelClick={onCancelClick}
           onSubmitPost={onSubmitPost}
+          cancelLabel={cancelLabel}
+          submitLabel={submitLabel}
+          isSubmitDisabled={isSubmitDisabled}
           canManagePost={canManagePost}
           isPostMenuOpen={isPostMenuOpen}
           onTogglePostMenu={onTogglePostMenu}
@@ -93,6 +107,7 @@ function PageHeader({
           <ProfileCard
             variant={isLoggedIn ? 'member' : 'guest'}
             startButtonProps={{ onClick: handleGoLogin }}
+            startButtonLabel="로그인하기"
             myGitlogButtonProps={{ onClick: handleGoHome }}
             writeGitlogButtonProps={{ onClick: handleGoWrite }}
             logoutButtonProps={{ onClick: handleLogout }}

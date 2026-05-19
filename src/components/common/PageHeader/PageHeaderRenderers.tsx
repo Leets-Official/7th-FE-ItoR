@@ -79,21 +79,29 @@ export const renderDetailType = ({
 );
 
 // 작성 타입 렌더링
-export const renderWriteType = ({ onDeletePost, onSubmitPost }: PageHeaderActionProps) => (
+export const renderWriteType = ({
+  onDeletePost,
+  onCancelClick,
+  onSubmitPost,
+  cancelLabel = '삭제하기',
+  submitLabel = '게시하기',
+  isSubmitDisabled = false,
+}: PageHeaderActionProps) => (
   <div className="flex h-[38px] items-center gap-[10px]">
     <button
       type="button"
       className="flex h-[38px] w-[76px] items-center justify-center text-sm font-normal leading-[160%] tracking-[-0.07px] text-warning"
-      onClick={onDeletePost}
+      onClick={onCancelClick ?? onDeletePost}
     >
-      삭제하기
+      {cancelLabel}
     </button>
     <button
       type="button"
-      className="flex h-[38px] w-[76px] items-center justify-center text-sm font-normal leading-[160%] tracking-[-0.07px] text-black"
+      className="flex h-[38px] w-[76px] items-center justify-center text-sm font-normal leading-[160%] tracking-[-0.07px] text-black disabled:text-gray-56"
       onClick={onSubmitPost}
+      disabled={isSubmitDisabled}
     >
-      게시하기
+      {submitLabel}
     </button>
   </div>
 );

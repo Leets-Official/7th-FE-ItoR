@@ -9,7 +9,11 @@ function PageHeaderRight({
   type,
   onCommentClick,
   onWriteClick,
+  onCancelClick,
   onSubmitPost,
+  cancelLabel,
+  submitLabel,
+  isSubmitDisabled,
   canManagePost,
   isPostMenuOpen,
   onTogglePostMenu,
@@ -29,7 +33,7 @@ function PageHeaderRight({
         onDeletePost,
       });
     case 'write':
-      return renderWriteType({ onDeletePost, onSubmitPost });
+      return renderWriteType({ onDeletePost, onCancelClick, onSubmitPost, cancelLabel, submitLabel, isSubmitDisabled });
     default:
       return null;
   }
