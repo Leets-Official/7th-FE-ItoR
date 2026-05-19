@@ -14,6 +14,7 @@ export interface ModalProps extends HTMLAttributes<HTMLDivElement> {
   onClose: () => void;
   onCancel?: MouseEventHandler<HTMLButtonElement>;
   onConfirm?: MouseEventHandler<HTMLButtonElement>;
+  confirmTone?: 'confirm' | 'primary';
 }
 
 export function Modal({
@@ -26,6 +27,7 @@ export function Modal({
   onClose,
   onCancel,
   onConfirm,
+  confirmTone = 'confirm',
   ...props
 }: ModalProps) {
   const normalizedDescription = description?.trim() ?? '';
@@ -97,7 +99,7 @@ export function Modal({
               type="button"
               className={cn(
                 modalStyles.actionButton,
-                modalStyleMap.actionTone.confirm,
+                modalStyleMap.actionTone[confirmTone],
               )}
               onClick={(event) => {
                 onConfirm?.(event);

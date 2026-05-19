@@ -1,4 +1,5 @@
 import { Profile } from '@/components/common/Profile';
+import { PictureFrame } from '@/components/common/PictureFrame';
 
 import type { PostListItemProps } from './PostListItem.types';
 
@@ -8,6 +9,7 @@ export function PostListItem({
   nickname,
   date,
   commentCount,
+  onClick,
   showThumbnail = true,
   thumbnailSrc,
   descriptionLines = 2,
@@ -16,7 +18,22 @@ export function PostListItem({
   const contentWidthClass = showThumbnail ? 'w-[548px]' : 'w-[656px]';
 
   return (
-    <article className="flex h-[166px] w-[688px] items-start gap-4 bg-white px-4 py-3">
+    <article
+      className={`flex h-[166px] w-[688px] items-start gap-4 bg-white px-4 py-3 ${onClick ? 'cursor-pointer' : ''}`}
+      onClick={onClick}
+      role={onClick ? 'button' : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      onKeyDown={
+        onClick
+          ? (event) => {
+              if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                onClick();
+              }
+            }
+          : undefined
+      }
+    >
       <div className={`flex h-[150px] ${contentWidthClass} flex-col`}>
         <div className="flex h-[106px] flex-col gap-2">
           <h3 className="text-base font-medium leading-[160%] tracking-[-0.08px] text-black">{title}</h3>
@@ -49,13 +66,13 @@ export function PostListItem({
       </div>
 
       {showThumbnail && (
-        <div className="h-[116px] w-[124px] px-4 py-3">
+        <PictureFrame size="small">
           {thumbnailSrc ? (
             <img src={thumbnailSrc} alt="게시물 썸네일" className="h-[92px] w-[92px] object-cover" />
           ) : (
             <div className="h-[92px] w-[92px] bg-gray-90" aria-hidden="true" />
           )}
-        </div>
+        </PictureFrame>
       )}
     </article>
   );
