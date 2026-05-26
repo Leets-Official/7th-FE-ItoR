@@ -3,7 +3,8 @@ import { Divider } from '@/components/common/Divider';
 import { PageHeader } from '@/components/common/PageHeader';
 import { Pagination } from '@/components/common/Pagination';
 import { PostListItem } from '@/components/common/PostListItem';
-import { getAccessToken } from '@/utils/tokenStorage';
+import { isLoggedInUser } from '@/utils/auth';
+import { mergePostTextContents } from '@/utils/postContent';
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { mapBlogPostsToListItems } from './BlogSearchPage.mapper';
@@ -32,14 +33,14 @@ export function LoginPage({ showLoginPopup = true }: LoginPageProps) {
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const hasAccessToken = Boolean(getAccessToken());
-  const shouldShowLoginPopup = showLoginPopup && !hasAccessToken && !isLoginPopupClosed;
+  const isLoggedIn = isLoggedInUser();
+  const shouldShowLoginPopup = showLoginPopup && !isLoggedIn && !isLoginPopupClosed;
 
   useEffect(() => {
-    if (showLoginPopup && hasAccessToken) {
+    if (showLoginPopup && isLoggedIn) {
       navigate('/main', { replace: true });
     }
-  }, [hasAccessToken, navigate, showLoginPopup]);
+  }, [isLoggedIn, navigate, showLoginPopup]);
 
   useEffect(() => {
     let isMounted = true;
@@ -55,13 +56,7 @@ export function LoginPage({ showLoginPopup = true }: LoginPageProps) {
         const mapped: BlogPostItem[] = response.posts.map((post) => ({
           id: post.postId,
           title: post.title,
-          content:
-            post.contents
-              .filter((item) => item.contentType === 'TEXT')
-              .sort((a, b) => a.contentOrder - b.contentOrder)
-              .map((item) => item.content)
-              .join(' ')
-              .trim() || '-',
+          content: mergePostTextContents(post.contents, { emptyFallback: '-', separator: ' ' }),
           authorNickname: post.nickName,
           createdAt: post.createdAt,
           commentsCount: post.commentCount,
