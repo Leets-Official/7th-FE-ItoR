@@ -60,19 +60,21 @@ function PageHeader({
     setIsProfileCardOpen((prev) => !prev);
   };
 
-  const handleGoHome = () => {
-    navigate('/main');
+  const navigateAndCloseProfileCard = (path: string) => {
+    navigate(path);
     setIsProfileCardOpen(false);
+  };
+
+  const handleGoHome = () => {
+    navigateAndCloseProfileCard('/main');
   };
 
   const handleGoWrite = () => {
-    navigate('/blog/write');
-    setIsProfileCardOpen(false);
+    navigateAndCloseProfileCard('/blog/write');
   };
 
   const handleGoLogin = () => {
-    navigate('/login');
-    setIsProfileCardOpen(false);
+    navigateAndCloseProfileCard('/login');
   };
 
   const handleLogout = () => {
