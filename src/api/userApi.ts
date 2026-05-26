@@ -1,7 +1,14 @@
 import api from "./index";
 import { useUserStore } from "@/store/useUserStore";
+import { mockFetchMyInfo, mockUpdateUserInfo } from "./mockData";
+
+const USE_MOCK_AUTH = import.meta.env.VITE_USE_MOCK_AUTH === "true";
 
 export const fetchMyInfo = async () => {
+  if (USE_MOCK_AUTH) {
+    return mockFetchMyInfo();
+  }
+
   const res = await api.get("/users/me");
   const currentUser = useUserStore.getState().user;
 
@@ -19,6 +26,10 @@ export const updateUserInfo = async (payload: {
   name?: string;
   introduction?: string;
 }) => {
+  if (USE_MOCK_AUTH) {
+    return mockUpdateUserInfo(payload);
+  }
+
   const res = await api.patch("/users", payload);
   const currentUser = useUserStore.getState().user;
 

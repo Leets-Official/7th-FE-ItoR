@@ -2,6 +2,7 @@ import type { AxiosError } from "axios";
 import { useAuthStore } from "@/store/useAuthStore";
 import type { User } from "@/store/useUserStore";
 import api, { type ApiResponse, syncAuthTokens } from "./index";
+import { mockLogin, mockRegister, mockRegisterKakao } from "./mockAuth";
 
 interface LoginResponse {
   accessToken: string;
@@ -62,6 +63,8 @@ type RegisterPayload = {
   introduction?: string;
 };
 
+const USE_MOCK_AUTH = import.meta.env.VITE_USE_MOCK_AUTH === "true";
+
 const getApiErrorMessage = (err: unknown, fallback: string) => {
   const error = err as AxiosError<ApiErrorResponse>;
   return error.response?.data?.message ?? fallback;
@@ -81,6 +84,12 @@ const buildRegisterPayload = (userData: RegisterPayload) => ({
 });
 
 export const login = async (email: string, password: string): Promise<User> => {
+  if (USE_MOCK_AUTH) {
+    const { user, accessToken, refreshToken } = await mockLogin(email, password);
+    saveTokens(accessToken, refreshToken);
+    return user;
+  }
+
   try {
     const res = await api.post<ApiResponse<LoginResponse>>("/auth/login", {
       email,
@@ -150,6 +159,10 @@ export const register = async (userData: {
     password: userData.password,
   };
 
+  if (USE_MOCK_AUTH) {
+    return mockRegister(payload);
+  }
+
   try {
     const res = await api.post<ApiResponse<null>>("/auth/register", payload);
     return res.data;
@@ -171,6 +184,10 @@ export const registerKakao = async (userData: {
     ...buildRegisterPayload(userData),
     kakaoId: userData.kakaoId,
   };
+
+  if (USE_MOCK_AUTH) {
+    return mockRegisterKakao(payload);
+  }
 
   try {
     const res = await api.post<ApiResponse<null>>("/auth/register-oauth", payload);

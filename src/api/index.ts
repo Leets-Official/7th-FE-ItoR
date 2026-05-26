@@ -3,6 +3,8 @@ import { useAuthStore } from "@/store/useAuthStore";
 import { useUserStore } from "@/store/useUserStore";
 import { API_BASE_URL } from "./config";
 
+const USE_MOCK_AUTH = import.meta.env.VITE_USE_MOCK_AUTH === "true";
+
 const AUTH_EXCLUDED_PATHS = [
   "/auth/login",
   "/auth/register",
@@ -14,6 +16,8 @@ const AUTH_EXCLUDED_PATHS = [
 
 const isAuthExcludedRequest = (url?: string) =>
   !!url && AUTH_EXCLUDED_PATHS.some((path) => url === path || url.startsWith(`${path}?`));
+
+const isMockToken = (token: string | null | undefined) => !!token && token.startsWith("mock-");
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
@@ -39,6 +43,11 @@ api.interceptors.request.use(
     }
 
     const token = useAuthStore.getState().accessToken ?? localStorage.getItem("accessToken");
+    if (USE_MOCK_AUTH || isMockToken(token)) {
+      delete config.headers.Authorization;
+      return config;
+    }
+
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -54,6 +63,10 @@ api.interceptors.response.use(
     const requestUrl = originalRequest?.url;
     const refreshToken =
       useAuthStore.getState().refreshToken ?? localStorage.getItem("refreshToken");
+
+    if (USE_MOCK_AUTH || isMockToken(refreshToken)) {
+      return Promise.reject(error);
+    }
 
     if (
       error.response?.status === 401 &&
