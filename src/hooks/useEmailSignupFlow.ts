@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { AxiosError } from 'axios';
 
+import { registerWithEmail } from '@/api/auth';
 import { getMyProfile, updateUser, updateUserNickname, updateUserPassword, updateUserPicture } from '@/api/user';
 import { useJoinForm } from '@/hooks/useJoinForm';
 import { getAccessToken } from '@/utils/tokenStorage';
@@ -22,6 +23,7 @@ export function useEmailSignupFlow() {
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [isBootstrapping, setIsBootstrapping] = useState(true);
   const [initialProfilePicture, setInitialProfilePicture] = useState<string | null>(null);
+  const [hasToken, setHasToken] = useState(false);
 
   const formatBirthDateInput = (rawValue: string) => {
     const digits = rawValue.replace(/\D/g, '').slice(0, 8);
@@ -75,6 +77,7 @@ export function useEmailSignupFlow() {
 
     const init = async () => {
       const hasToken = Boolean(getAccessToken());
+      setHasToken(hasToken);
 
       if (!hasToken) {
         setValues({
@@ -134,6 +137,16 @@ export function useEmailSignupFlow() {
     setSubmitError('');
     setIsSubmitting(true);
     try {
+      if (!hasToken) {
+        await registerWithEmail(
+          values,
+          profilePicture && !profilePicture.startsWith('blob:') ? profilePicture : DEFAULT_PROFILE_PICTURE_URL,
+        );
+        setErrors({});
+        setIsSuccessModalOpen(true);
+        return;
+      }
+
       await updateUser({
         email: values.email.trim(),
         nickname: values.nickname.trim(),
