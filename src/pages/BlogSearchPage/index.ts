@@ -1,1 +1,1 @@
-export { BlogSearchPage } from './BlogSearchPage';
+export { LoginPage } from './BlogSearchPage';

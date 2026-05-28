@@ -8,6 +8,7 @@ export {
   ErrorOutlineIcon,
   FolderOpenIcon,
   GitlogLogoIcon,
+  KakaoIcon,
   MoreVertIcon,
   NavigateBeforeIcon,
   Profile1Icon,

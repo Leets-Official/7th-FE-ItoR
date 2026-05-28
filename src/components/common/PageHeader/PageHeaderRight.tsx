@@ -1,18 +1,39 @@
 import { renderDetailType, renderMainType, renderWriteType } from './PageHeaderRenderers';
-import type { PageHeaderType } from './types';
+import type { PageHeaderActionProps, PageHeaderType } from './types';
 
-interface PageHeaderRightProps {
+interface PageHeaderRightProps extends PageHeaderActionProps {
   type: PageHeaderType;
 }
 
-function PageHeaderRight({ type }: PageHeaderRightProps) {
+function PageHeaderRight({
+  type,
+  onCommentClick,
+  onWriteClick,
+  onCancelClick,
+  onSubmitPost,
+  cancelLabel,
+  submitLabel,
+  isSubmitDisabled,
+  canManagePost,
+  isPostMenuOpen,
+  onTogglePostMenu,
+  onEditPost,
+  onDeletePost,
+}: PageHeaderRightProps) {
   switch (type) {
     case 'main':
-      return renderMainType();
+      return renderMainType({ onWriteClick });
     case 'detail':
-      return renderDetailType();
+      return renderDetailType({
+        onCommentClick,
+        canManagePost,
+        isPostMenuOpen,
+        onTogglePostMenu,
+        onEditPost,
+        onDeletePost,
+      });
     case 'write':
-      return renderWriteType();
+      return renderWriteType({ onDeletePost, onCancelClick, onSubmitPost, cancelLabel, submitLabel, isSubmitDisabled });
     default:
       return null;
   }
