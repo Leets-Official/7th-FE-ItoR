@@ -1,5 +1,5 @@
 import { createComment, deleteComment } from '@/api/comment';
-import { deletePost } from '@/api/post';
+import { deletePost, getPostDetail } from '@/api/post';
 import { useApiPostDetail, useAutoClearMessage } from '@/hooks';
 import { BLOG_POSTS_MOCK_RESPONSE } from '@/pages/BlogSearchPage/BlogSearchPage.mapper';
 import { isLoggedInUser } from '@/utils/auth';
@@ -116,8 +116,35 @@ export function useBlogDetailState(postId: string | null) {
     }
 
     try {
-      await createComment(apiPostId, { content: next });
-      setComments((prev) => [...prev, { id: Date.now(), author: '닉네임', dateText: '방금 전', isMine: true, content: next }]);
+      const createdComment = await createComment(apiPostId, { content: next });
+      const createdCommentId =
+        typeof createdComment === 'object' && createdComment !== null && 'commentId' in createdComment
+          ? Number((createdComment as { commentId?: number }).commentId)
+          : NaN;
+
+      if (Number.isFinite(createdCommentId)) {
+        setComments((prev) => [
+          ...prev,
+          {
+            id: createdCommentId,
+            author: '닉네임',
+            dateText: '방금 전',
+            isMine: true,
+            content: next,
+          },
+        ]);
+      } else {
+        const postDetail = await getPostDetail(apiPostId);
+        setComments(
+          (postDetail.comments ?? []).map((comment) => ({
+            id: comment.commentId,
+            author: comment.nickName,
+            dateText: comment.createdAt,
+            isMine: Boolean(comment.isOwner),
+            content: comment.content,
+          })),
+        );
+      }
       setCommentInput('');
       setToastMessage('댓글이 등록되었습니다.');
     } catch {
