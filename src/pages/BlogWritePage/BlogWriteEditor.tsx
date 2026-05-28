@@ -87,7 +87,7 @@ export function BlogWriteEditor({
                 </button>
               ) : null}
               <button type="button" onClick={() => onSelectImageCard(image.id)} className={`block w-full overflow-hidden border ${isSelected ? 'border-[#00A1FF]' : 'border-gray-90'}`}>
-                <img src={image.previewUrl} alt={image.file.name} className="block h-auto w-full object-cover" />
+                <img src={image.previewUrl} alt={image.name} className="block h-auto w-full object-cover" />
               </button>
             </div>
           );
