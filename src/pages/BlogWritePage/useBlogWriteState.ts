@@ -8,7 +8,8 @@ import { useNavigate } from 'react-router-dom';
 
 export interface WriteImageItem {
   id: number;
-  file: File;
+  file: File | null;
+  name: string;
   previewUrl: string;
   uploadedUrl: string;
 }
@@ -39,17 +40,25 @@ export function useBlogWriteState(postId: string | null) {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const imageSectionRef = useRef<HTMLDivElement | null>(null);
   const contentTextareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const imagesRef = useRef<WriteImageItem[]>([]);
 
   useEffect(() => {
     if (!isLoggedIn) navigate('/login', { replace: true });
   }, [isLoggedIn, navigate]);
 
-  useEffect(
-    () => () => {
-      images.forEach((image) => URL.revokeObjectURL(image.previewUrl));
-    },
-    [images],
-  );
+  useEffect(() => {
+    imagesRef.current = images;
+  }, [images]);
+
+  useEffect(() => {
+    return () => {
+      imagesRef.current.forEach((image) => {
+        if (image.previewUrl.startsWith('blob:')) {
+          URL.revokeObjectURL(image.previewUrl);
+        }
+      });
+    };
+  }, []);
 
   useEffect(() => {
     if (selectedImageId === null) return;
@@ -73,11 +82,13 @@ export function useBlogWriteState(postId: string | null) {
     if (!isEditMode || !postId) {
       setTitle('');
       setContent('');
+      setImages([]);
       return;
     }
     if (!isApiPostId) {
       setTitle(post?.title ?? '');
       setContent(post?.content ?? '');
+      setImages([]);
     }
   }, [isApiPostId, isEditMode, post?.content, post?.title, postId]);
 
@@ -85,6 +96,18 @@ export function useBlogWriteState(postId: string | null) {
     if (!apiPost) return;
     setTitle(apiPost.title);
     setContent(apiPost.content);
+    setImages(
+      apiPost.contents
+        .filter((item) => item.contentType === 'IMAGE')
+        .sort((a, b) => a.contentOrder - b.contentOrder)
+        .map((item, index) => ({
+          id: Date.now() + index,
+          file: null,
+          name: `existing-image-${index + 1}`,
+          previewUrl: item.content,
+          uploadedUrl: item.content,
+        })),
+    );
   }, [apiPost]);
 
   useEffect(() => {
@@ -133,6 +156,7 @@ export function useBlogWriteState(postId: string | null) {
           return {
             id: Date.now() + Math.floor(Math.random() * 10000),
             file,
+            name: file.name,
             previewUrl: URL.createObjectURL(file),
             uploadedUrl: getPublicImageUrlFromPresignedUrl(uploadUrl),
           };
@@ -151,7 +175,7 @@ export function useBlogWriteState(postId: string | null) {
   const handleDeleteImage = (imageId: number) => {
     setImages((prev) => {
       const target = prev.find((image) => image.id === imageId);
-      if (target) URL.revokeObjectURL(target.previewUrl);
+      if (target?.previewUrl.startsWith('blob:')) URL.revokeObjectURL(target.previewUrl);
       return prev.filter((image) => image.id !== imageId);
     });
     setSelectedImageId(null);
