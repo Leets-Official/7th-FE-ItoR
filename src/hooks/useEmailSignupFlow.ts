@@ -5,11 +5,12 @@ import { registerWithEmail } from '@/api/auth';
 import { getMyProfile, updateUser, updateUserNickname, updateUserPassword, updateUserPicture } from '@/api/user';
 import { useJoinForm } from '@/hooks/useJoinForm';
 import { getAccessToken } from '@/utils/tokenStorage';
-import { validateProfileUpdateForm } from '@/utils/validation';
+import { validateJoinForm, validateProfileUpdateForm } from '@/utils/validation';
 
 const DEFAULT_PROFILE_PICTURE_URL = 'https://example.com/profile.jpg';
 
 export function useEmailSignupFlow() {
+  const [hasToken, setHasToken] = useState(false);
   const {
     values,
     errors,
@@ -19,11 +20,10 @@ export function useEmailSignupFlow() {
     setErrors,
     handleChange,
     validate,
-  } = useJoinForm(validateProfileUpdateForm);
+  } = useJoinForm((formValues) => (hasToken ? validateProfileUpdateForm(formValues) : validateJoinForm(formValues)));
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [isBootstrapping, setIsBootstrapping] = useState(true);
   const [initialProfilePicture, setInitialProfilePicture] = useState<string | null>(null);
-  const [hasToken, setHasToken] = useState(false);
 
   const formatBirthDateInput = (rawValue: string) => {
     const digits = rawValue.replace(/\D/g, '').slice(0, 8);
