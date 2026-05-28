@@ -1,17 +1,12 @@
 import axios from 'axios';
-import { http } from '@/api/http';
-
-interface ApiResponse<T> {
-  code: number;
-  message: string;
-  data: T;
-}
+import { http, unwrapApiData } from '@/api/http';
+import type { ApiEnvelope } from '@/api/types';
 
 export async function getPresignedImageUrl(fileName: string) {
-  const response = await http.get<ApiResponse<string>>('/images/presigned-url', {
+  const response = await http.get<ApiEnvelope<string>>('/images/presigned-url', {
     params: { fileName },
   });
-  return response.data.data;
+  return unwrapApiData(response);
 }
 
 export async function uploadImageToPresignedUrl(uploadUrl: string, file: File) {
@@ -23,5 +18,6 @@ export async function uploadImageToPresignedUrl(uploadUrl: string, file: File) {
 }
 
 export function getPublicImageUrlFromPresignedUrl(uploadUrl: string) {
-  return uploadUrl.split('?')[0];
+  const parsed = new URL(uploadUrl);
+  return `${parsed.origin}${parsed.pathname}`;
 }

@@ -1,10 +1,5 @@
-import { http } from '@/api/http';
-
-interface ApiResponse<T> {
-  code: number;
-  message: string;
-  data: T;
-}
+import { http, unwrapApiData } from '@/api/http';
+import type { ApiEnvelope } from '@/api/types';
 
 export interface UserProfile {
   id: number;
@@ -26,23 +21,22 @@ export interface UpdateUserRequest {
 }
 
 export async function getMyProfile() {
-  const response = await http.get<ApiResponse<UserProfile>>('/users/me');
-  return response.data.data;
+  const response = await http.get<ApiEnvelope<UserProfile>>('/users/me');
+  return unwrapApiData(response);
 }
 
 export async function updateUser(payload: UpdateUserRequest) {
-  await http.patch<ApiResponse<unknown>>('/users', payload);
+  await http.patch<ApiEnvelope<unknown>>('/users', payload);
 }
 
 export async function updateUserPassword(password: string) {
-  await http.patch<ApiResponse<unknown>>('/users/password', { password });
+  await http.patch<ApiEnvelope<unknown>>('/users/password', { password });
 }
 
 export async function updateUserNickname(nickname: string) {
-  await http.patch<ApiResponse<unknown>>('/users/nickname', { nickname });
+  await http.patch<ApiEnvelope<unknown>>('/users/nickname', { nickname });
 }
 
 export async function updateUserPicture(profilePicture: string) {
-  await http.patch<ApiResponse<unknown>>('/users/picture', { profilePicture });
+  await http.patch<ApiEnvelope<unknown>>('/users/picture', { profilePicture });
 }
-

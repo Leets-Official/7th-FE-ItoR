@@ -1,11 +1,6 @@
-import { http } from '@/api/http';
+import { http, unwrapApiData } from '@/api/http';
+import type { ApiEnvelope } from '@/api/types';
 import { getAccessToken } from '@/utils/tokenStorage';
-
-interface ApiResponse<T> {
-  code: number;
-  message: string;
-  data: T;
-}
 
 export type PostContentType = 'TEXT' | 'IMAGE';
 
@@ -58,36 +53,36 @@ export async function getPostDetail(postId: string) {
   const hasAccessToken = Boolean(getAccessToken());
   const endpoint = hasAccessToken ? '/posts/token' : '/posts';
 
-  const response = await http.get<ApiResponse<PostDetailResponse>>(endpoint, {
+  const response = await http.get<ApiEnvelope<PostDetailResponse>>(endpoint, {
     params: { postId },
   });
-  return response.data.data;
+  return unwrapApiData(response);
 }
 
 export async function getPostList(page: number, size: number) {
   const hasAccessToken = Boolean(getAccessToken());
   const endpoint = hasAccessToken ? '/posts/all/token' : '/posts/all';
 
-  const response = await http.get<ApiResponse<PostListResponse>>(endpoint, {
+  const response = await http.get<ApiEnvelope<PostListResponse>>(endpoint, {
     params: { page, size },
   });
-  return response.data.data;
+  return unwrapApiData(response);
 }
 
 export async function createPost(payload: PostUpsertRequest) {
-  const response = await http.post<ApiResponse<unknown>>('/posts', payload);
-  return response.data.data;
+  const response = await http.post<ApiEnvelope<unknown>>('/posts', payload);
+  return unwrapApiData(response);
 }
 
 export async function updatePost(postId: string, payload: PostUpsertRequest) {
-  const response = await http.patch<ApiResponse<unknown>>('/posts', payload, {
+  const response = await http.patch<ApiEnvelope<unknown>>('/posts', payload, {
     params: { postId },
   });
-  return response.data.data;
+  return unwrapApiData(response);
 }
 
 export async function deletePost(postId: string) {
-  await http.delete<ApiResponse<unknown>>('/posts', {
+  await http.delete<ApiEnvelope<unknown>>('/posts', {
     params: { postId },
   });
 }

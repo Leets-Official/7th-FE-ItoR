@@ -1,16 +1,18 @@
-import { http } from '@/api/http';
+import { http, unwrapApiData } from '@/api/http';
+import type { ApiEnvelope } from '@/api/types';
 import type { JoinFormValues } from '@/pages/MyPageEditPage/types';
-
-interface ApiResponse<T> {
-  code: number;
-  message: string;
-  data: T;
-}
 
 interface LoginTokenPayload {
   accessToken: string;
   refreshToken: string;
 }
+
+interface KakaoRedirectObject {
+  redirectUrl?: string;
+  url?: string;
+}
+
+type KakaoRedirectData = string | KakaoRedirectObject;
 
 interface EmailLoginRequest {
   email: string;
@@ -29,53 +31,34 @@ interface RegisterRequest {
 
 const DEFAULT_PROFILE_PICTURE_URL = 'https://example.com/profile.jpg';
 
-function extractKakaoRedirectUrl(data: unknown): string | null {
+function extractKakaoRedirectUrl(data: KakaoRedirectData): string | null {
   if (typeof data === 'string') {
     return data;
   }
 
-  if (typeof data === 'object' && data !== null) {
-    const candidate = data as Record<string, unknown>;
-    const url = candidate.redirectUrl ?? candidate.url;
-    if (typeof url === 'string') {
-      return url;
-    }
-  }
-
-  return null;
-}
-
-function extractLoginTokens(data: unknown): LoginTokenPayload | null {
-  if (typeof data !== 'object' || data === null) {
-    return null;
-  }
-
-  const candidate = data as Record<string, unknown>;
-  const accessToken = candidate.accessToken;
-  const refreshToken = candidate.refreshToken;
-
-  if (typeof accessToken === 'string' && typeof refreshToken === 'string') {
-    return { accessToken, refreshToken };
+  const url = data.redirectUrl ?? data.url;
+  if (typeof url === 'string') {
+    return url;
   }
 
   return null;
 }
 
 export async function getKakaoLoginRedirectUrl() {
-  const response = await http.get<ApiResponse<unknown>>('/auth/kakao');
-  return extractKakaoRedirectUrl(response.data.data);
+  const response = await http.get<ApiEnvelope<KakaoRedirectData>>('/auth/kakao');
+  return extractKakaoRedirectUrl(unwrapApiData(response));
 }
 
 export async function loginWithKakaoCode(code: string) {
-  const response = await http.get<ApiResponse<unknown>>('/auth/kakao/redirect', {
+  const response = await http.get<ApiEnvelope<LoginTokenPayload>>('/auth/kakao/redirect', {
     params: { code },
   });
-  return extractLoginTokens(response.data.data);
+  return unwrapApiData(response);
 }
 
 export async function loginWithEmail(payload: EmailLoginRequest) {
-  const response = await http.post<ApiResponse<unknown>>('/auth/login', payload);
-  return extractLoginTokens(response.data.data);
+  const response = await http.post<ApiEnvelope<LoginTokenPayload>>('/auth/login', payload);
+  return unwrapApiData(response);
 }
 
 export async function registerWithEmail(values: JoinFormValues, profilePicture: string) {
@@ -89,5 +72,5 @@ export async function registerWithEmail(values: JoinFormValues, profilePicture: 
     introduction: values.introduction.trim(),
   };
 
-  await http.post<ApiResponse<unknown>>('/auth/register', payload);
+  await http.post<ApiEnvelope<unknown>>('/auth/register', payload);
 }
