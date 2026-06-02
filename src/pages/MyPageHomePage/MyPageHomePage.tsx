@@ -77,7 +77,7 @@ export function MyPageHomePage() {
     <div className="min-h-screen bg-white">
       <PageHeader type="main" className="h-[72px] border-b border-gray-90 px-4 py-4" authStateOverride={isLoggedIn ? 'member' : 'guest'} />
 
-      <main className="mx-auto flex w-full max-w-[1366px] bg-white">
+      <main className="flex w-full max-w-[1366px] bg-white">
         <ProfileCard
           variant={isLoggedIn ? 'member' : 'guest'}
           startButtonLabel="로그인하기"
