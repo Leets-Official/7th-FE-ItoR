@@ -1,8 +1,10 @@
 import { Button } from '@/components/common/Button';
 import { Profile } from '@/components/common/Profile';
 import type { ProfileCardProps } from '@/components/common/ProfileCard/ProfileCard.types';
+import { cn } from '@/utils/cn';
 
 export function ProfileCard({
+  className,
   variant = 'guest',
   caption = 'You can make anything by writing',
   startButtonProps,
@@ -15,7 +17,7 @@ export function ProfileCard({
 }: ProfileCardProps) {
   if (variant === 'member') {
     return (
-      <aside className="flex h-[768px] w-[240px] flex-col justify-between border-r border-gray-90 bg-gray-96">
+      <aside className={cn('flex h-[768px] w-[240px] flex-col justify-between border-r border-gray-90 bg-gray-96', className)}>
         <div className="px-4 pt-4">
           <Profile size={1} className="h-16 w-16" />
 
@@ -49,7 +51,7 @@ export function ProfileCard({
   }
 
   return (
-    <aside className="h-[768px] w-[240px] border-r border-gray-90 bg-gray-96">
+    <aside className={cn('h-[768px] w-[240px] border-r border-gray-90 bg-gray-96', className)}>
       <div className="border-b border-gray-90 px-4 pt-4">
         <Profile size={1} className="h-16 w-16" />
 

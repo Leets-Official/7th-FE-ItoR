@@ -3,6 +3,7 @@ import type { ButtonHTMLAttributes } from 'react';
 export type ProfileCardVariant = 'guest' | 'member';
 
 export interface ProfileCardProps {
+  className?: string;
   variant?: ProfileCardVariant;
   caption?: string;
   startButtonProps?: ButtonHTMLAttributes<HTMLButtonElement>;

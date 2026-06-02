@@ -2,7 +2,8 @@ import PageHeaderLeft from '@/components/common/PageHeader/PageHeaderLeft';
 import PageHeaderRight from '@/components/common/PageHeader/PageHeaderRight';
 import { ProfileCard } from '@/components/common/ProfileCard';
 import { cn } from '@/utils/cn';
-import { clearAuthTokens, getAccessToken } from '@/utils/tokenStorage';
+import { isLoggedInUser } from '@/utils/auth';
+import { clearAuthTokens } from '@/utils/tokenStorage';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { PageHeaderActionProps, PageHeaderType } from './types';
@@ -29,14 +30,14 @@ function PageHeader({
   onDeletePost,
 }: PageHeaderProps) {
   const navigate = useNavigate();
-  const profileCardRef = useRef<HTMLDivElement | null>(null);
+  const profileMenuRef = useRef<HTMLDivElement | null>(null);
   const [isProfileCardOpen, setIsProfileCardOpen] = useState(false);
 
   const isLoggedIn = useMemo(() => {
     if (authStateOverride) {
       return authStateOverride === 'member';
     }
-    return Boolean(getAccessToken());
+    return isLoggedInUser();
   }, [authStateOverride]);
 
   useEffect(() => {
@@ -45,7 +46,7 @@ function PageHeader({
     }
 
     const handleOutsideClick = (event: MouseEvent) => {
-      if (!profileCardRef.current?.contains(event.target as Node)) {
+      if (!profileMenuRef.current?.contains(event.target as Node)) {
         setIsProfileCardOpen(false);
       }
     };
@@ -69,8 +70,16 @@ function PageHeader({
     navigateAndCloseProfileCard('/main');
   };
 
+  const handleGoMyPage = () => {
+    navigateAndCloseProfileCard('/mypage');
+  };
+
   const handleGoWrite = () => {
     navigateAndCloseProfileCard('/blog/write');
+  };
+
+  const handleGoSetting = () => {
+    navigateAndCloseProfileCard('/signup/email?auth=member');
   };
 
   const handleGoLogin = () => {
@@ -84,7 +93,7 @@ function PageHeader({
   };
 
   return (
-    <div className="relative">
+    <div ref={profileMenuRef} className="relative z-40">
       <header className={cn('flex h-[74px] w-full items-center justify-between bg-white px-4 py-3', className)}>
         <PageHeaderLeft onMenuClick={handleToggleProfileCard} onLogoClick={handleGoHome} />
         <PageHeaderRight
@@ -105,13 +114,15 @@ function PageHeader({
       </header>
 
       {isProfileCardOpen ? (
-        <div ref={profileCardRef} className="absolute top-[74px] left-0 z-30">
+        <div className="absolute top-0 left-0 z-50">
           <ProfileCard
+            className="h-screen"
             variant={isLoggedIn ? 'member' : 'guest'}
             startButtonProps={{ onClick: handleGoLogin }}
             startButtonLabel="로그인하기"
-            myGitlogButtonProps={{ onClick: handleGoHome }}
+            myGitlogButtonProps={{ onClick: handleGoMyPage }}
             writeGitlogButtonProps={{ onClick: handleGoWrite }}
+            settingButtonProps={{ onClick: handleGoSetting }}
             logoutButtonProps={{ onClick: handleLogout }}
           />
         </div>
