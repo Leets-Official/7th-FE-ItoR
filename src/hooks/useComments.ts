@@ -21,6 +21,9 @@ export interface Comment {
   isOwner: boolean;
 }
 
+const getErrorMessage = (error: unknown, fallback: string) =>
+  error instanceof Error ? error.message : fallback;
+
 export const useComments = (postId: string) => {
   const [comments, setComments] = useState<Comment[]>([]);
   const [loading, setLoading] = useState(false);
@@ -68,11 +71,14 @@ export const useComments = (postId: string) => {
       const res = await createComment(postId, content);
       if (res.code === 201 || res.code === 200) {
         await fetchComments();
-      } else {
-        setError(res.message || "댓글 등록에 실패했습니다.");
+        return;
       }
-    } catch {
-      setError("댓글 등록 중 오류가 발생했습니다.");
+
+      throw new Error(res.message || "댓글 등록에 실패했습니다.");
+    } catch (err) {
+      const message = getErrorMessage(err, "댓글 등록 중 오류가 발생했습니다.");
+      setError(message);
+      throw err;
     }
   };
 
@@ -81,11 +87,14 @@ export const useComments = (postId: string) => {
       const res = await updateComment(id, newContent);
       if (res.code === 201 || res.code === 200) {
         await fetchComments();
-      } else {
-        setError(res.message || "댓글 수정에 실패했습니다.");
+        return;
       }
-    } catch {
-      setError("댓글 수정 중 오류가 발생했습니다.");
+
+      throw new Error(res.message || "댓글 수정에 실패했습니다.");
+    } catch (err) {
+      const message = getErrorMessage(err, "댓글 수정 중 오류가 발생했습니다.");
+      setError(message);
+      throw err;
     }
   };
 
@@ -94,11 +103,14 @@ export const useComments = (postId: string) => {
       const res = await deleteComment(id);
       if (res.code === 201 || res.code === 200) {
         await fetchComments();
-      } else {
-        setError(res.message || "댓글 삭제에 실패했습니다.");
+        return;
       }
-    } catch {
-      setError("댓글 삭제 중 오류가 발생했습니다.");
+
+      throw new Error(res.message || "댓글 삭제에 실패했습니다.");
+    } catch (err) {
+      const message = getErrorMessage(err, "댓글 삭제 중 오류가 발생했습니다.");
+      setError(message);
+      throw err;
     }
   };
 

@@ -9,7 +9,7 @@ import type { ApiPost } from "@/types/post";
 import { SettingsIcon } from "@/assets/icons";
 import Avatar from "@/components/Avatar/Avatar";
 import { useUserStore } from "@/store/useUserStore";
-import { fetchPosts } from "@/api/postApi";
+import { fetchMyPosts } from "@/api/postApi";
 import { fetchMyInfo } from "@/api/userApi";
 import { useToast } from "@/contexts/ToastContext";
 import { useApiError } from "@/hooks/useApiError";
@@ -55,7 +55,7 @@ export default function MyPage() {
     const loadPosts = async () => {
       setLoading(true);
       try {
-        const res = await fetchPosts(currentPage, 5);
+        const res = await fetchMyPosts(currentPage, 5);
 
         if (res.code === 200 && res.data?.posts) {
           setPosts(res.data.posts);

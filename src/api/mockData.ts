@@ -176,6 +176,26 @@ export const mockFetchPosts = async (page: number, size: number) => {
   };
 };
 
+export const mockFetchMyPosts = async (page: number, size: number) => {
+  await wait(MOCK_DELAY_MS);
+
+  const user = ensureUser();
+  const posts = readPosts()
+    .filter((post) => post.authorEmail === user.email)
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  const start = (page - 1) * size;
+  const pagedPosts = posts.slice(start, start + size);
+
+  return {
+    code: 200,
+    message: "Mock my posts fetched",
+    data: {
+      posts: pagedPosts.map((post) => toApiPost(post)),
+      pageMax: Math.max(1, Math.ceil(posts.length / size)),
+    },
+  };
+};
+
 export const mockFetchPostDetail = async (postId: string) => {
   await wait(MOCK_DELAY_MS);
 

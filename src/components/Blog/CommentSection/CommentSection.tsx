@@ -22,6 +22,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({
   isLoggedIn,
   postAuthorProfile,
   postId,
+  onSubmit,
 }) => {
   const { user } = useUserStore();
   const { comments, addComment, editComment, removeComment } = useComments(postId);
@@ -33,16 +34,29 @@ const CommentSection: React.FC<CommentSectionProps> = ({
 
   const handleSubmit = async () => {
     if (!comment.trim()) return;
-    await addComment(comment);
-    setComment("");
-    showToast("댓글이 등록되었습니다.", "success");
+
+    try {
+      await addComment(comment);
+      onSubmit?.(comment);
+      setComment("");
+      showToast("댓글이 등록되었습니다.", "success");
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "댓글 등록에 실패했습니다.";
+      showToast(message, "error");
+    }
   };
 
   const handleDelete = async () => {
     if (!targetCommentId) return;
-    await removeComment(targetCommentId);
-    showToast("댓글이 삭제되었습니다.", "success");
-    setIsDeleteModalOpen(false);
+
+    try {
+      await removeComment(targetCommentId);
+      showToast("댓글이 삭제되었습니다.", "success");
+      setIsDeleteModalOpen(false);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "댓글 삭제에 실패했습니다.";
+      showToast(message, "error");
+    }
   };
 
   return (

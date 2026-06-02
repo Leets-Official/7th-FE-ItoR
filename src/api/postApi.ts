@@ -4,6 +4,7 @@ import {
   mockCreatePost,
   mockDeletePost,
   mockFetchPostDetail,
+  mockFetchMyPosts,
   mockFetchPosts,
   mockUpdatePost,
 } from "./mockData";
@@ -19,6 +20,17 @@ export const fetchPosts = async (page: number, size: number) => {
   const endpoint = accessToken ? "/posts/all/token" : "/posts/all";
 
   const res = await api.get(endpoint, {
+    params: { page, size },
+  });
+  return res.data;
+};
+
+export const fetchMyPosts = async (page: number, size: number) => {
+  if (USE_MOCK_AUTH) {
+    return mockFetchMyPosts(page, size);
+  }
+
+  const res = await api.get("/posts/my", {
     params: { page, size },
   });
   return res.data;
