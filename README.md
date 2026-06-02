@@ -71,3 +71,16 @@ export default defineConfig([
   },
 ])
 ```
+
+## Mock auth
+
+When the backend auth server is unavailable, you can enable local mock login/signup.
+
+1. Create a `.env.local` file in the project root.
+2. Add `VITE_USE_MOCK_AUTH=true`.
+3. Restart `npm run dev`.
+
+Mock login account:
+
+- Email: `tester@leets.land`
+- Password: `test1234`
