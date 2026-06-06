@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getKakaoLoginRedirectUrl, loginWithEmail } from '@/api/auth';
+import { getAuthEntryUrl, getKakaoLoginRedirectUrl, loginWithEmail } from '@/api/auth';
 import { setAuthTokens } from '@/utils/tokenStorage';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -29,7 +29,7 @@ export function useLoginPopup() {
     } catch {
       // ignore
     }
-    window.location.href = `${import.meta.env.VITE_API_BASE_URL}/auth/kakao`;
+    window.location.href = getAuthEntryUrl('/auth/kakao');
   };
 
   const handleEmailLogin = async () => {
