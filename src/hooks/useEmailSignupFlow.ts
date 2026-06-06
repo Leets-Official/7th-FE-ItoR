@@ -1,15 +1,39 @@
 import { useEffect, useState } from 'react';
 import { AxiosError } from 'axios';
 
-import { registerWithEmail } from '@/api/auth';
+import { registerWithEmail, registerWithOAuth, type OAuthLoginPayload } from '@/api/auth';
 import { getMyProfile, updateUser, updateUserNickname, updateUserPassword, updateUserPicture } from '@/api/user';
 import { useJoinForm } from '@/hooks/useJoinForm';
 import { getAccessToken } from '@/utils/tokenStorage';
-import { validateJoinForm, validateProfileUpdateForm } from '@/utils/validation';
+import { validateJoinForm, validateProfileUpdateForm, validateSocialSignupForm } from '@/utils/validation';
 
 const DEFAULT_PROFILE_PICTURE_URL = 'https://example.com/profile.jpg';
+export type SignupMethod = 'email' | 'kakao';
 
-export function useEmailSignupFlow() {
+function parseStoredKakaoPayload(): OAuthLoginPayload | null {
+  const rawPayload = sessionStorage.getItem('kakaoSignupPayload');
+
+  if (!rawPayload) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(rawPayload) as OAuthLoginPayload;
+  } catch {
+    return null;
+  }
+}
+
+function getKakaoId(payload: OAuthLoginPayload | null) {
+  if (!payload) {
+    return null;
+  }
+
+  const id = payload.kakaoId ?? payload.id;
+  return typeof id === 'number' ? id : null;
+}
+
+export function useEmailSignupFlow(signupMethod: SignupMethod = 'email') {
   const [hasToken, setHasToken] = useState(false);
   const {
     values,
@@ -20,10 +44,17 @@ export function useEmailSignupFlow() {
     setErrors,
     handleChange,
     validate,
-  } = useJoinForm((formValues) => (hasToken ? validateProfileUpdateForm(formValues) : validateJoinForm(formValues)));
+  } = useJoinForm((formValues) => {
+    if (hasToken) {
+      return validateProfileUpdateForm(formValues);
+    }
+
+    return signupMethod === 'kakao' ? validateSocialSignupForm(formValues) : validateJoinForm(formValues);
+  });
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [isBootstrapping, setIsBootstrapping] = useState(true);
   const [initialProfilePicture, setInitialProfilePicture] = useState<string | null>(null);
+  const [kakaoId, setKakaoId] = useState<number | null>(null);
 
   const formatBirthDateInput = (rawValue: string) => {
     const digits = rawValue.replace(/\D/g, '').slice(0, 8);
@@ -79,16 +110,30 @@ export function useEmailSignupFlow() {
       const hasToken = Boolean(getAccessToken());
       setHasToken(hasToken);
 
-      if (!hasToken) {
+      if (signupMethod === 'kakao') {
+        const kakaoPayload = parseStoredKakaoPayload();
+        const nextKakaoId = getKakaoId(kakaoPayload);
+
+        if (!nextKakaoId) {
+          setSubmitError('* 카카오 인증 정보가 없습니다. 카카오로 회원가입을 다시 진행해주세요.');
+        }
+
+        setKakaoId(nextKakaoId);
         setValues({
-          email: 'ahksjhd@gmail.com',
+          email: kakaoPayload?.email ?? '',
           password: '',
           passwordConfirm: '',
-          name: '김깃츠',
-          birthDate: '2000-01-01',
-          nickname: '닉네임',
-          introduction: '한 줄 소개',
+          name: kakaoPayload?.name ?? '',
+          birthDate: '',
+          nickname: '',
+          introduction: '',
         });
+        setInitialProfilePicture(kakaoPayload?.profilePicture ?? kakaoPayload?.profileImage ?? null);
+        setIsBootstrapping(false);
+        return;
+      }
+
+      if (!hasToken) {
         setIsBootstrapping(false);
         return;
       }
@@ -137,6 +182,25 @@ export function useEmailSignupFlow() {
     setSubmitError('');
     setIsSubmitting(true);
     try {
+      if (signupMethod === 'kakao') {
+        if (!kakaoId) {
+          setSubmitError('* 카카오 인증 정보가 없습니다. 카카오로 회원가입을 다시 진행해주세요.');
+          return;
+        }
+
+        await registerWithOAuth(
+          values,
+          profilePicture && !profilePicture.startsWith('blob:')
+            ? profilePicture
+            : initialProfilePicture || DEFAULT_PROFILE_PICTURE_URL,
+          kakaoId,
+        );
+        sessionStorage.removeItem('kakaoSignupPayload');
+        setErrors({});
+        setIsSuccessModalOpen(true);
+        return;
+      }
+
       if (!hasToken) {
         await registerWithEmail(
           values,

@@ -115,3 +115,38 @@ export function validateProfileUpdateForm(formValues: JoinFormValues): JoinFormE
 
   return nextErrors;
 }
+
+export function validateSocialSignupForm(formValues: JoinFormValues): JoinFormErrors {
+  const nextErrors: JoinFormErrors = {};
+  const email = formValues.email.trim().toLowerCase();
+
+  if (!email) {
+    nextErrors.email = REQUIRED_MESSAGE;
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    nextErrors.email = '* 올바른 이메일 형식이 아닙니다.';
+  }
+
+  if (!formValues.name.trim()) {
+    nextErrors.name = REQUIRED_MESSAGE;
+  } else if (formValues.name.trim().length > 10) {
+    nextErrors.name = '* 이름은 최대 10글자 입니다.';
+  }
+
+  if (!formValues.birthDate.trim()) {
+    nextErrors.birthDate = REQUIRED_MESSAGE;
+  } else if (!/^\d{4}-\d{2}-\d{2}$/.test(formValues.birthDate.trim())) {
+    nextErrors.birthDate = '* YYYY-MM-DD 형식으로 입력해주세요.';
+  }
+
+  if (!formValues.nickname.trim()) {
+    nextErrors.nickname = REQUIRED_MESSAGE;
+  } else if (formValues.nickname.trim().length > 20) {
+    nextErrors.nickname = '* 닉네임은 최대 20글자입니다.';
+  }
+
+  if (formValues.introduction.trim().length > 30) {
+    nextErrors.introduction = '* 한 줄 소개는 최대 30글자입니다.';
+  }
+
+  return nextErrors;
+}
