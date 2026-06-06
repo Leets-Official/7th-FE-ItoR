@@ -7,6 +7,8 @@ import svgr from 'vite-plugin-svgr';
 export default defineConfig({
   plugins: [react(), tailwindcss(), svgr()],
   server: {
+    port: 3000,
+    strictPort: true,
     proxy: {
       '/api': {
         target: 'https://blog.leets.land',

@@ -34,6 +34,8 @@ function PageHeaderRight({
       });
     case 'write':
       return renderWriteType({ onDeletePost, onCancelClick, onSubmitPost, cancelLabel, submitLabel, isSubmitDisabled });
+    case 'empty':
+      return null;
     default:
       return null;
   }

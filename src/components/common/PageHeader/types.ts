@@ -1,4 +1,4 @@
-export type PageHeaderType = 'main' | 'detail' | 'write';
+export type PageHeaderType = 'main' | 'detail' | 'write' | 'empty';
 
 export interface PageHeaderActionProps {
   onCommentClick?: () => void;
