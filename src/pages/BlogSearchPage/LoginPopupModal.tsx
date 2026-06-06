@@ -31,7 +31,7 @@ export function LoginPopupModal({ onClose }: LoginPopupModalProps) {
               </div>
               <div className="flex w-[295px] items-center gap-2 px-2 py-1 md:w-[313px]"><Divider color="gray90" className="w-auto flex-1 bg-gray-33" /><span className="text-xs text-gray-56">SNS</span><Divider color="gray90" className="w-auto flex-1 bg-gray-33" /></div>
               <div className="w-[326px] px-4 py-1 md:w-[344px]"><Button size="regular" showIcon icon={<KakaoIcon aria-hidden="true" />} className="h-[45px] w-[294px] rounded-[6px] border-transparent bg-[#FEE500] text-black md:w-[312px] [&_svg]:h-[17px] [&_svg]:w-[18px]" onClick={state.handleKakaoLogin}>카카오로 로그인</Button></div>
-              <div className="flex justify-center py-1"><Button size="text" intent="gray" showIcon={false} className="h-[25px] px-2 py-[2px] text-xs text-gray-56 hover:bg-transparent" onClick={() => state.navigate('/signup/email')}>또는 회원가입</Button></div>
+              <div className="flex justify-center py-1"><Button size="text" intent="gray" showIcon={false} className="h-[25px] px-2 py-[2px] text-xs text-gray-56 hover:bg-transparent" onClick={() => state.navigate('/signup')}>또는 회원가입</Button></div>
             </div>
           </div>
         </div>

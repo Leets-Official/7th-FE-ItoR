@@ -7,6 +7,7 @@ import { MyPageEditPage } from '@/pages/MyPageEditPage';
 import { MyPageHomePage } from '@/pages/MyPageHomePage';
 import { PlaygroundPage } from '@/pages/PlaygroundPage';
 import { BlogWritePage } from '@/pages/BlogWritePage';
+import { SignupChoicePage } from '@/pages/SignupChoicePage';
 
 export function AppRouter() {
   return (
@@ -17,7 +18,9 @@ export function AppRouter() {
       <Route path="/blog/:id" element={<BlogDetailPage />} />
       <Route path="/blog/write" element={<BlogWritePage />} />
       <Route path="/blog/:id/edit" element={<BlogWritePage />} />
+      <Route path="/signup" element={<SignupChoicePage />} />
       <Route path="/signup/email" element={<MyPageEditPage />} />
+      <Route path="/signup/kakao" element={<MyPageEditPage signupMethod="kakao" />} />
       <Route path="/oauth/kakao/callback" element={<KakaoCallbackPage />} />
       <Route path="/oauth/kakao/success" element={<KakaoCallbackPage />} />
       <Route path="/auth/kakao/redirect" element={<KakaoCallbackPage />} />
