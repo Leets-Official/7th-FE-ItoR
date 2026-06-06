@@ -8,6 +8,7 @@ export interface ButtonProps
   children?: ReactNode;
   showIcon?: boolean;
   icon?: ReactNode;
+  textClassName?: string;
   pressed?: boolean;
   disabled?: boolean;
 }
