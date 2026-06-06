@@ -4,6 +4,8 @@ import { AxiosError } from 'axios';
 import { loginWithKakaoCode } from '@/api/auth';
 import { setAuthTokens } from '@/utils/tokenStorage';
 
+const processedKakaoCodes = new Set<string>();
+
 export function KakaoCallbackPage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -17,18 +19,37 @@ export function KakaoCallbackPage() {
       return;
     }
 
+    if (processedKakaoCodes.has(code)) {
+      return;
+    }
+
+    processedKakaoCodes.add(code);
+
     const run = async () => {
       try {
-        const tokens = await loginWithKakaoCode(code);
+        const kakaoResult = await loginWithKakaoCode(code);
 
-        if (!tokens) {
-          setMessage('로그인은 되었지만 토큰 응답 형식이 예상과 다릅니다.');
+        if (!kakaoResult) {
+          setMessage('카카오 응답 형식이 예상과 다릅니다.');
           return;
         }
 
-        setAuthTokens(tokens.accessToken, tokens.refreshToken);
+        if (sessionStorage.getItem('kakaoSignupIntent') === 'true') {
+          sessionStorage.removeItem('kakaoSignupIntent');
+          sessionStorage.setItem('kakaoSignupPayload', JSON.stringify(kakaoResult));
+          navigate('/signup/kakao', { replace: true });
+          return;
+        }
+
+        if (!kakaoResult.accessToken || !kakaoResult.refreshToken) {
+          setMessage(kakaoResult.responseMessage ?? '카카오 로그인 응답에 토큰이 없습니다.');
+          return;
+        }
+
+        setAuthTokens(kakaoResult.accessToken, kakaoResult.refreshToken);
         navigate('/main', { replace: true });
       } catch (error) {
+        processedKakaoCodes.delete(code);
         if (error instanceof AxiosError) {
           setMessage(error.response?.data?.message ?? '카카오 로그인에 실패했습니다.');
           return;
