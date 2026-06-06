@@ -18,6 +18,7 @@ export function JoinSuccessModal({ isOpen, onClose }: JoinSuccessModalProps) {
       cancelText="확인"
       confirmText="로그인하기"
       confirmTone="primary"
+      onCancel={() => navigate('/main')}
       onConfirm={() => navigate('/login')}
     />
   );
